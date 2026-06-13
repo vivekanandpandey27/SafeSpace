@@ -3,11 +3,10 @@
   "version": "1.0.0",
   "main": "index.js",
   "type": "module",
-    "scripts": {
-    "start": "node Server.js",
-    "dev": "nodemon Server.js"
+  "scripts": {
+    "start": "node backend/Server.js",
+    "dev": "nodemon backend/Server.js"
   },
-
   "repository": {
     "type": "git",
     "url": "git+https://github.com/vivekanandpandey27/SafeSpace.git"
