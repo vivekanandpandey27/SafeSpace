@@ -1,0 +1,32 @@
+{
+  "name": "safespace",
+  "version": "1.0.0",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "start": "node backend/Server.js",
+    "dev": "nodemon backend/Server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/vivekanandpandey27/SafeSpace.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/vivekanandpandey27/SafeSpace/issues"
+  },
+  "homepage": "https://github.com/vivekanandpandey27/SafeSpace#readme",
+  "description": "",
+  "dependencies": {
+    "cloudinary": "^2.10.0",
+    "cors": "^2.8.6",
+    "dotenv": "^17.4.2",
+    "express": "^5.2.1",
+    "mongoose": "^9.7.0"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.14"
+  }
+}
