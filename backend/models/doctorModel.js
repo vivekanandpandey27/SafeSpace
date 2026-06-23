@@ -14,6 +14,7 @@ const doctorSchema = new mongoose.Schema({
     slots_booked: { type: Object, default: {} },
     address: { type: Object, required: true },
     date: { type: Number, required: true },
+    registration_Number: { type: String, required: true },       
     rating: {type : Number, default : 0},
 }, { minimize: false })
 
