@@ -13,7 +13,7 @@ const port = process.env.PORT || 4000
 
 // Connect to database (CALL THE FUNCTION)
 connectDB()
-connectCloudinary()
+// connectCloudinary()
 
 // middlewares
 app.use(express.json())
