@@ -40,7 +40,7 @@ const Footer = () => {
       {/* Bottom Footer */}
       <hr className="border-gray-300" />
       <p className="py-4 text-sm text-center text-gray-600">
-        © 2025 appointy.in — All Rights Reserved.
+        © 2026 SafeSpace — All Rights Reserved Made by Vivekanand Pandey(CSE'27 at NIT-ALLAHABAD) & Samar Mishra(CSD'27 at RGIPT).
       </p>
     </div>
   );
