@@ -8,7 +8,9 @@ const userSchema = new mongoose.Schema({
     address: { type: Object, default: { line1: '', line2: '' } },
     gender: { type: String, default: 'Not Selected' },
     dob: { type: String, default: 'Not Selected' },
-    password: { type: String, required: true },
+    password: { type: String, required: false },      // optional for Google OAuth users
+    googleId: { type: String, default: null },        // Google's unique user ID
+    authProvider: { type: String, default: 'local' }, // 'local' or 'google'
 })
 
 const userModel = mongoose.models.user || mongoose.model("user", userSchema);
