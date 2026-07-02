@@ -25,8 +25,8 @@ const Navbar = () => {
         <div className="w-10 h-10 rounded-xl flex items-center justify-center"
           style={{ background: 'linear-gradient(135deg, #4F46E5, #8B5CF6)' }}>
           <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
-            <path d="M12 2C8 2 5 5.5 5 9c0 5 7 13 7 13s7-8 7-13c0-3.5-3-7-7-7z" fill="white" opacity="0.9"/>
-            <circle cx="12" cy="9" r="3" fill="white"/>
+            <path d="M12 2C8 2 5 5.5 5 9c0 5 7 13 7 13s7-8 7-13c0-3.5-3-7-7-7z" fill="white" opacity="0.9" />
+            <circle cx="12" cy="9" r="3" fill="white" />
           </svg>
         </div>
         <div>
@@ -49,10 +49,9 @@ const Navbar = () => {
             <NavLink
               to={to}
               className={({ isActive }) =>
-                `px-4 py-2 rounded-full text-xs tracking-wider transition-all duration-200 ${
-                  isActive
-                    ? 'text-white font-semibold'
-                    : 'text-gray-600 hover:text-primary hover:bg-indigo-50'
+                `px-4 py-2 rounded-full text-xs tracking-wider transition-all duration-200 ${isActive
+                  ? 'text-white font-semibold'
+                  : 'text-gray-600 hover:text-primary hover:bg-indigo-50'
                 }`
               }
               style={({ isActive }) => isActive ? { background: 'linear-gradient(135deg, #4F46E5, #8B5CF6)' } : {}}
@@ -68,7 +67,7 @@ const Navbar = () => {
         {/* Admin Panel – home page only */}
         {location.pathname === '/' && (
           <button
-            onClick={() => window.open('http://localhost:5174', '_blank')}
+            onClick={() => window.open('http://localhost:5174/', '_blank')}
             className='text-xs px-4 py-2 rounded-full border border-indigo-200 text-primary hover:bg-primary hover:text-white transition-all duration-200 hidden md:block font-medium'
           >
             Admin Panel
@@ -106,7 +105,7 @@ const Navbar = () => {
           >
             <span>Get Started</span>
             <svg width="14" height="14" viewBox="0 0 16 16" fill="none">
-              <path d="M3 8h10M9 4l4 4-4 4" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+              <path d="M3 8h10M9 4l4 4-4 4" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
             </svg>
           </button>
         )}
@@ -133,8 +132,8 @@ const Navbar = () => {
               <div className='flex items-center gap-2'>
                 <div className='w-8 h-8 rounded-lg flex items-center justify-center' style={{ background: 'linear-gradient(135deg, #4F46E5, #8B5CF6)' }}>
                   <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
-                    <path d="M12 2C8 2 5 5.5 5 9c0 5 7 13 7 13s7-8 7-13c0-3.5-3-7-7-7z" fill="white"/>
-                    <circle cx="12" cy="9" r="3" fill="white" opacity="0.7"/>
+                    <path d="M12 2C8 2 5 5.5 5 9c0 5 7 13 7 13s7-8 7-13c0-3.5-3-7-7-7z" fill="white" />
+                    <circle cx="12" cy="9" r="3" fill="white" opacity="0.7" />
                   </svg>
                 </div>
                 <span className='font-bold text-primary' style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>SafeSpace</span>
