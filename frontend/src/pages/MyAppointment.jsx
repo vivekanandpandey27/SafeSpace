@@ -1,150 +1,245 @@
 import React, { useContext, useEffect, useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 import { AppContext } from '../context/AppContext'
 import axios from 'axios'
 import { toast } from 'react-toastify'
 import { assets } from '../assets/assets'
 
-const MyProfile = () => {
-    const [isEdit, setIsEdit] = useState(false)
-    const [image, setImage] = useState(false)
+const MyAppointments = () => {
+  const { backendUrl, token, getDoctorsData } = useContext(AppContext)
+  const navigate = useNavigate()
+  const { doctors } = useContext(AppContext)
+  const [appointments, setAppointments] = useState([])
+  const [payment, setPayment] = useState('')
 
-    const { token, backendUrl, userData, setUserData, loadUserProfileData } = useContext(AppContext)
+  const months = [" ", "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]
 
-    const updateUserProfileData = async () => {
-        try {
-            const formData = new FormData()
-            formData.append('name', userData.name)
-            formData.append('phone', userData.phone)
-            formData.append('address', JSON.stringify(userData.address))
-            formData.append('gender', userData.gender)
-            formData.append('dob', userData.dob)
-            image && formData.append('image', image)
+  const slotDateFormat = (slotDate) => {
+    const [day, month, year] = slotDate.split('_')
+    return `${day} ${months[Number(month)]} ${year}`
+  }
 
-            const { data } = await axios.post(backendUrl + '/api/user/update-profile', formData, { headers: { token } })
-
-            if (data.success) {
-                toast.success(data.message)
-                await loadUserProfileData()
-                setIsEdit(false)
-                setImage(false)
-            } else {
-                toast.error(data.message)
-            }
-        } catch (error) {
-            console.log(error)
-            toast.error(error.message)
-        }
+  // Getting User Appointments Data Using API
+  const getUserAppointments = async () => {
+    try {
+      const { data } = await axios.get(backendUrl + '/api/user/appointments', { headers: { token } })
+      setAppointments(data.appointments.reverse())
+    } catch (error) {
+      console.log(error)
+      toast.error(error.message)
     }
+  }
 
-    return userData ? (
-        <div className='max-w-lg flex flex-col gap-2 text-sm pt-5'>
+  // Function to cancel appointment Using API
+  const cancelAppointment = async (appointmentId) => {
+    try {
+      const { data } = await axios.post(backendUrl + '/api/user/cancel-appointment', { appointmentId }, { headers: { token } })
+      if (data.success) {
+        toast.success(data.message)
+        getUserAppointments()
+        getDoctorsData()
+      } else {
+        toast.error(data.message)
+      }
+    } catch (error) {
+      console.log(error)
+      toast.error(error.message)
+    }
+  }
 
-            {isEdit ? (
-                <label htmlFor='image'>
-                    <div className='inline-block relative cursor-pointer'>
-                        <img className='w-36 rounded opacity-75' src={image ? URL.createObjectURL(image) : userData.image} alt="" />
-                        <img className='w-10 absolute bottom-12 right-12' src={image ? '' : assets.upload_icon} alt="" />
-                    </div>
-                    <input onChange={(e) => setImage(e.target.files[0])} type="file" id="image" hidden />
-                </label>
-            ) : (
-                <img className='w-36 rounded' src={userData.image} alt="" />
-            )}
+  const initPay = (order) => {
+    const options = {
+      key: import.meta.env.VITE_RAZORPAY_KEY_ID,
+      amount: order.amount,
+      currency: order.currency,
+      name: 'Session Payment',
+      description: "Therapy Session Payment",
+      order_id: order.id,
+      receipt: order.receipt,
+      handler: async (response) => {
+        console.log(response)
+        try {
+          const { data } = await axios.post(backendUrl + "/api/user/verifyRazorpay", response, { headers: { token } });
+          if (data.success) {
+            navigate('/my-appointments')
+            getUserAppointments()
+          }
+        } catch (error) {
+          console.log(error)
+          toast.error(error.message)
+        }
+      }
+    };
+    const rzp = new window.Razorpay(options);
+    rzp.open();
+  }
 
-            {isEdit ? (
-                <input className='bg-gray-50 text-3xl font-medium max-w-60' type="text"
-                    onChange={(e) => setUserData(prev => ({ ...prev, name: e.target.value }))}
-                    value={userData.name}
-                />
-            ) : (
-                <p className='font-medium text-3xl text-[#262626] mt-4'>{userData.name}</p>
-            )}
+  // Function to make payment using razorpay
+  const appointmentRazorpay = async (appointmentId) => {
+    try {
+      const { data } = await axios.post(backendUrl + '/api/user/payment-razorpay', { appointmentId }, { headers: { token } })
+      if (data.success) {
+        initPay(data.order)
+      } else {
+        toast.error(data.message)
+      }
+    } catch (error) {
+      console.log(error)
+      toast.error(error.message)
+    }
+  }
 
-            <hr className='bg-[#ADADAD] h-[1px] border-none' />
+  useEffect(() => {
+    if (token) {
+      getUserAppointments()
+    }
+  }, [token])
 
-            <div>
-                <p className='text-gray-600 underline mt-3'>CONTACT INFORMATION</p>
-                <div className='grid grid-cols-[1fr_3fr] gap-y-2.5 mt-3 text-[#363636]'>
-                    <p className='font-medium'>Email id:</p>
-                    <p className='text-blue-500'>{userData.email}</p>
+  // Generate appointment data from doctors
+  useEffect(() => {
+    if (doctors.length) {
+      const generatedAppointments = doctors.slice(0, 3).map((doc, idx) => ({
+        _id: `appointment_${idx}`,
+        docData: {
+          name: doc.name,
+          speciality: doc.speciality,
+          image: doc.image,
+          address: doc.address || { line1: "Street X", line2: "City Y" }
+        },
+        slotDate: `12_0${idx + 1}_2025`,
+        slotTime: `${10 + idx}:00 AM`,
+        payment: idx === 1,
+        isCompleted: idx === 2,
+        cancelled: false
+      }))
+      setAppointments(generatedAppointments)
+    }
+  }, [doctors])
 
-                    <p className='font-medium'>Phone:</p>
-                    {isEdit ? (
-                        <input className='bg-gray-50 max-w-52' type="text"
-                            onChange={(e) => setUserData(prev => ({ ...prev, phone: e.target.value }))}
-                            value={userData.phone}
-                        />
-                    ) : (
-                        <p className='text-blue-500'>{userData.phone}</p>
-                    )}
+  const simulateStripe = () => toast.info("Redirecting to Stripe...")
+  const simulateRazorpay = () => toast.info("Opening Razorpay...")
 
-                    <p className='font-medium'>Address:</p>
-                    {isEdit ? (
-                        <p>
-                            <input className='bg-gray-50' type="text"
-                                onChange={(e) => setUserData(prev => ({
-                                    ...prev,
-                                    address: { ...(prev.address || {}), line1: e.target.value }
-                                }))}
-                                value={userData.address?.line1 || ''}
-                            />
-                            <br />
-                            <input className='bg-gray-50' type="text"
-                                onChange={(e) => setUserData(prev => ({
-                                    ...prev,
-                                    address: { ...(prev.address || {}), line2: e.target.value }
-                                }))}
-                                value={userData.address?.line2 || ''}
-                            />
-                        </p>
-                    ) : (
-                        <p className='text-gray-500'>{userData.address?.line1} <br /> {userData.address?.line2}</p>
-                    )}
-                </div>
-            </div>
+  return (
+    <div className='min-h-screen py-6' style={{ background: 'linear-gradient(180deg, #F8F7FF 0%, #FFFFFF 100%)' }}>
 
-            <div>
-                <p className='text-[#797979] underline mt-3'>BASIC INFORMATION</p>
-                <div className='grid grid-cols-[1fr_3fr] gap-y-2.5 mt-3 text-gray-600'>
-                    <p className='font-medium'>Gender:</p>
-                    {isEdit ? (
-                        <select className='max-w-20 bg-gray-50'
-                            onChange={(e) => setUserData(prev => ({ ...prev, gender: e.target.value }))}
-                            value={userData.gender}
-                        >
-                            <option value="Not Selected">Not Selected</option>
-                            <option value="Male">Male</option>
-                            <option value="Female">Female</option>
-                        </select>
-                    ) : (
-                        <p className='text-gray-500'>{userData.gender}</p>
-                    )}
-
-                    <p className='font-medium'>Birthday:</p>
-                    {isEdit ? (
-                        <input className='max-w-28 bg-gray-50' type='date'
-                            onChange={(e) => setUserData(prev => ({ ...prev, dob: e.target.value }))}
-                            value={userData.dob}
-                        />
-                    ) : (
-                        <p className='text-gray-500'>{userData.dob}</p>
-                    )}
-                </div>
-            </div>
-
-            <div className='mt-10'>
-                {isEdit ? (
-                    <button onClick={updateUserProfileData} className='border border-primary px-8 py-2 rounded-full hover:bg-primary hover:text-white transition-all'>
-                        Save information
-                    </button>
-                ) : (
-                    <button onClick={() => setIsEdit(true)} className='border border-primary px-8 py-2 rounded-full hover:bg-primary hover:text-white transition-all'>
-                        Edit
-                    </button>
-                )}
-            </div>
+      {/* ─── Page Header ─── */}
+      <div className='mb-8'>
+        <div className='inline-flex items-center gap-2 bg-indigo-50 text-primary rounded-full px-4 py-1.5 text-xs font-semibold tracking-wider uppercase mb-3'>
+          <span>📅</span> Appointments
         </div>
-    ) : null
+        <h1 className='text-2xl font-bold' style={{ fontFamily: "'Plus Jakarta Sans', sans-serif", color: '#1e1b4b' }}>
+          My Sessions
+        </h1>
+        <p className='text-gray-500 text-sm mt-1'>Track and manage your upcoming therapy sessions.</p>
+      </div>
+
+      {/* ─── Appointments List ─── */}
+      {appointments.length === 0 ? (
+        <div className='flex flex-col items-center justify-center py-20 text-center'>
+          <div className='text-6xl mb-4'>📋</div>
+          <p className='text-gray-400 text-lg font-medium'>No sessions yet</p>
+          <p className='text-gray-400 text-sm mt-1 mb-6'>Book your first therapy session to get started.</p>
+          <button onClick={() => navigate('/doctors')} className='btn-primary text-sm px-6 py-3'>
+            Find a Therapist
+          </button>
+        </div>
+      ) : (
+        <div className='flex flex-col gap-4'>
+          {appointments.map((item, index) => (
+            <div key={index} className='bg-white rounded-2xl shadow-card border border-indigo-50 overflow-hidden'>
+              <div className='flex flex-col sm:flex-row gap-0'>
+
+                {/* ─── Doctor Image ─── */}
+                <div className='sm:w-36 flex-shrink-0'>
+                  <div className='h-full min-h-36 overflow-hidden' style={{ background: 'linear-gradient(145deg, #EEF2FF, #EDE9FE)' }}>
+                    <img
+                      className='w-full h-full object-cover object-top sm:max-w-[144px]'
+                      src={item.docData.image}
+                      alt={item.docData.name}
+                    />
+                  </div>
+                </div>
+
+                {/* ─── Info ─── */}
+                <div className='flex-1 p-5 flex flex-col sm:flex-row gap-4 items-start sm:items-center justify-between'>
+                  <div className='flex flex-col gap-1.5'>
+                    <p className='text-base font-bold' style={{ fontFamily: "'Plus Jakarta Sans', sans-serif", color: '#1e1b4b' }}>
+                      {item.docData.name}
+                    </p>
+                    <span className='text-xs font-medium text-primary bg-indigo-50 px-2.5 py-1 rounded-full inline-block w-fit'>
+                      {item.docData.speciality}
+                    </span>
+                    <div className='flex items-start gap-2 mt-1 text-xs text-gray-500'>
+                      <span>📍</span>
+                      <div>
+                        <p>{item.docData.address.line1}</p>
+                        <p>{item.docData.address.line2}</p>
+                      </div>
+                    </div>
+                    <p className='text-xs text-gray-500 flex items-center gap-1'>
+                      <span>🗓️</span>
+                      <span className='font-semibold text-gray-700'>{slotDateFormat(item.slotDate)}</span>
+                      <span className='mx-1'>|</span>
+                      <span>{item.slotTime}</span>
+                    </p>
+                  </div>
+
+                  {/* ─── Action Buttons ─── */}
+                  <div className='flex flex-col gap-2 min-w-[180px]'>
+                    {/* Pay Online */}
+                    {!item.cancelled && !item.payment && !item.isCompleted && payment !== item._id && (
+                      <button
+                        onClick={() => setPayment(item._id)}
+                        className='w-full py-2.5 px-4 rounded-xl text-sm font-semibold border-2 border-primary text-primary hover:bg-primary hover:text-white transition-all duration-200'
+                      >
+                        💳 Pay Online
+                      </button>
+                    )}
+                    {/* Razorpay button */}
+                    {!item.cancelled && !item.payment && !item.isCompleted && payment === item._id && (
+                      <button
+                        onClick={() => appointmentRazorpay(item._id)}
+                        className='w-full py-2.5 px-4 rounded-xl text-sm font-semibold bg-indigo-50 border border-indigo-200 hover:bg-indigo-100 transition-all duration-200 flex items-center justify-center'
+                      >
+                        <img className='max-w-20 max-h-5' src={assets.razorpay_logo} alt="" />
+                      </button>
+                    )}
+                    {/* Paid */}
+                    {!item.cancelled && item.payment && !item.isCompleted && (
+                      <button className='w-full py-2.5 px-4 rounded-xl text-sm font-semibold bg-green-50 border border-green-200 text-green-600 cursor-default'>
+                        ✅ Paid
+                      </button>
+                    )}
+                    {/* Completed */}
+                    {item.isCompleted && (
+                      <button className='w-full py-2.5 px-4 rounded-xl text-sm font-semibold bg-indigo-50 border border-indigo-200 text-primary cursor-default'>
+                        🎉 Session Completed
+                      </button>
+                    )}
+                    {/* Cancel */}
+                    {!item.cancelled && !item.isCompleted && (
+                      <button
+                        onClick={() => cancelAppointment(item._id)}
+                        className='w-full py-2.5 px-4 rounded-xl text-sm font-medium text-gray-500 border border-gray-200 hover:border-red-300 hover:bg-red-50 hover:text-red-500 transition-all duration-200'
+                      >
+                        Cancel Session
+                      </button>
+                    )}
+                    {/* Cancelled */}
+                    {item.cancelled && !item.isCompleted && (
+                      <button className='w-full py-2.5 px-4 rounded-xl text-sm font-medium text-red-400 border border-red-200 bg-red-50 cursor-default'>
+                        ❌ Session Cancelled
+                      </button>
+                    )}
+                  </div>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      )}
+    </div>
+  )
 }
 
-export default MyProfile
+export default MyAppointments

@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" fill="none">
+  <circle cx="50" cy="50" r="48" fill="url(#traumaBg)"/>
+  <defs>
+    <linearGradient id="traumaBg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#EEF2FF"/>
+      <stop offset="100%" stop-color="#EDE9FE"/>
+    </linearGradient>
+  </defs>
+  <!-- Two hands cradling a heart = trauma healing -->
+  <!-- Left hand -->
+  <path d="M20 62 Q18 50 26 46 Q30 44 32 50L34 68" stroke="#4F46E5" stroke-width="2.5" stroke-linecap="round" fill="#C7D2FE"/>
+  <!-- Right hand -->
+  <path d="M80 62 Q82 50 74 46 Q70 44 68 50L66 68" stroke="#4F46E5" stroke-width="2.5" stroke-linecap="round" fill="#C7D2FE"/>
+  <!-- Connecting arc (cupped) -->
+  <path d="M34 68 Q50 78 66 68" stroke="#4F46E5" stroke-width="2.5" stroke-linecap="round" fill="#C7D2FE"/>
+  <!-- Heart -->
+  <path d="M42 48c0-4 4-7 8-7s8 3 8 7c0 5-8 12-8 12s-8-7-8-12z" fill="#8B5CF6"/>
+  <path d="M42 48c0-4 4-7 8-7s8 3 8 7c0 5-8 12-8 12s-8-7-8-12z" fill="#A78BFA" opacity="0.5"/>
+  <!-- Shining rays from heart -->
+  <line x1="50" y1="36" x2="50" y2="33" stroke="#FCD34D" stroke-width="1.5" stroke-linecap="round"/>
+  <line x1="57" y1="38" x2="59" y2="36" stroke="#FCD34D" stroke-width="1.5" stroke-linecap="round"/>
+  <line x1="43" y1="38" x2="41" y2="36" stroke="#FCD34D" stroke-width="1.5" stroke-linecap="round"/>
+</svg>

@@ -16,33 +16,27 @@ const Login = () => {
 
   const onSubmitHandler = async (event) => {
     event.preventDefault();
-    try{
-    if (state === 'Sign Up') {
-
-      const { data } = await axios.post(backendUrl + '/api/user/register', { name, email, password })
-
-      if (data.success) {
-        localStorage.setItem('token', data.token)
-        setToken(data.token)
+    try {
+      if (state === 'Sign Up') {
+        const { data } = await axios.post(backendUrl + '/api/user/register', { name, email, password })
+        if (data.success) {
+          localStorage.setItem('token', data.token)
+          setToken(data.token)
+        } else {
+          toast.error(data.message)
+        }
       } else {
-        toast.error(data.message)
+        const { data } = await axios.post(backendUrl + '/api/user/login', { email, password })
+        if (data.success) {
+          localStorage.setItem('token', data.token)
+          setToken(data.token)
+        } else {
+          toast.error(data.message)
+        }
       }
-
-    } else {
-
-      const { data } = await axios.post(backendUrl + '/api/user/login', { email, password })
-
-      if (data.success) {
-        localStorage.setItem('token', data.token)
-        setToken(data.token)
-      } else {
-        toast.error(data.message)
-      }
-
-    }}catch(error){
+    } catch (error) {
       toast.error(error.message)
     }
-
   }
 
   useEffect(() => {
@@ -52,32 +46,100 @@ const Login = () => {
   }, [token])
 
   return (
-    <form onSubmit={onSubmitHandler} className='min-h-[80vh] flex items-center'>
-      <div className='flex flex-col gap-3 m-auto items-start p-8 min-w-[340px] sm:min-w-96 border rounded-xl text-[#5E5E5E] text-sm shadow-lg'>
-        <p className='text-2xl font-semibold'>{state === 'Sign Up' ? 'Create Account' : 'Login'}</p>
-        <p>Please {state === 'Sign Up' ? 'sign up' : 'log in'} to book appointment</p>
-        {state === 'Sign Up'
-          ? <div className='w-full '>
-            <p>Full Name</p>
-            <input onChange={(e) => setName(e.target.value)} value={name} className='border border-[#DADADA] rounded w-full p-2 mt-1' type="text" required />
+    <div className='min-h-[85vh] flex items-center justify-center py-10 px-4'
+      style={{ background: 'linear-gradient(135deg, #EEF2FF 0%, #F5F3FF 50%, #EDE9FE 100%)' }}>
+
+      {/* ─── Card ─── */}
+      <form onSubmit={onSubmitHandler}
+        className='w-full max-w-md glass rounded-3xl p-8 shadow-card-hover animate-fade-in-up'>
+
+        {/* Logo & Brand */}
+        <div className='flex items-center gap-2 mb-6'>
+          <div className='w-9 h-9 rounded-xl flex items-center justify-center'
+            style={{ background: 'linear-gradient(135deg, #4F46E5, #8B5CF6)' }}>
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+              <path d="M12 2C8 2 5 5.5 5 9c0 5 7 13 7 13s7-8 7-13c0-3.5-3-7-7-7z" fill="white" opacity="0.9"/>
+              <circle cx="12" cy="9" r="3" fill="white"/>
+            </svg>
           </div>
-          : null
-        }
-        <div className='w-full '>
-          <p>Email</p>
-          <input onChange={(e) => setEmail(e.target.value)} value={email} className='border border-[#DADADA] rounded w-full p-2 mt-1' type="email" required />
+          <span className='font-bold text-primary text-lg' style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>SafeSpace</span>
         </div>
-        <div className='w-full '>
-          <p>Password</p>
-          <input onChange={(e) => setPassword(e.target.value)} value={password} className='border border-[#DADADA] rounded w-full p-2 mt-1' type="password" required />
+
+        {/* Heading */}
+        <div className='mb-6'>
+          <h1 className='text-2xl font-bold mb-1' style={{ fontFamily: "'Plus Jakarta Sans', sans-serif", color: '#1e1b4b' }}>
+            {state === 'Sign Up' ? 'Create Your Account' : 'Welcome Back'}
+          </h1>
+          <p className='text-gray-500 text-sm'>
+            {state === 'Sign Up'
+              ? 'Begin your journey toward mental wellness'
+              : 'Log in to continue your healing journey'}
+          </p>
         </div>
-        <button type='submit' className='bg-primary text-white w-full py-2 my-2 rounded-md text-base'>{state === 'Sign Up' ? 'Create account' : 'Login'}</button>
-        {state === 'Sign Up'
-          ? <p>Already have an account? <span onClick={() => setState('Login')} className='text-primary underline cursor-pointer'>Login here</span></p>
-          : <p>Create an new account? <span onClick={() => setState('Sign Up')} className='text-primary underline cursor-pointer'>Click here</span></p>
-        }
-      </div>
-    </form>
+
+        {/* Form Fields */}
+        <div className='flex flex-col gap-4'>
+          {state === 'Sign Up' && (
+            <div>
+              <label className='block text-xs font-semibold text-gray-500 uppercase tracking-wider mb-1.5'>Full Name</label>
+              <input
+                onChange={(e) => setName(e.target.value)}
+                value={name}
+                className='safespace-input'
+                type="text"
+                placeholder="Your full name"
+                required
+              />
+            </div>
+          )}
+
+          <div>
+            <label className='block text-xs font-semibold text-gray-500 uppercase tracking-wider mb-1.5'>Email Address</label>
+            <input
+              onChange={(e) => setEmail(e.target.value)}
+              value={email}
+              className='safespace-input'
+              type="email"
+              placeholder="you@example.com"
+              required
+            />
+          </div>
+
+          <div>
+            <label className='block text-xs font-semibold text-gray-500 uppercase tracking-wider mb-1.5'>Password</label>
+            <input
+              onChange={(e) => setPassword(e.target.value)}
+              value={password}
+              className='safespace-input'
+              type="password"
+              placeholder="••••••••"
+              required
+            />
+          </div>
+        </div>
+
+        {/* Submit Button */}
+        <button
+          type='submit'
+          className='btn-primary w-full mt-6 py-3 text-base font-semibold'
+        >
+          {state === 'Sign Up' ? '🚀 Create Account' : '→ Log In'}
+        </button>
+
+        {/* Toggle */}
+        <p className='text-center text-gray-500 text-sm mt-4'>
+          {state === 'Sign Up'
+            ? <>Already have an account?{' '}<span onClick={() => setState('Login')} className='text-primary font-semibold cursor-pointer hover:underline'>Log in here</span></>
+            : <>Don't have an account?{' '}<span onClick={() => setState('Sign Up')} className='text-primary font-semibold cursor-pointer hover:underline'>Sign up free</span></>
+          }
+        </p>
+
+        {/* Privacy Note */}
+        <p className='text-center text-gray-400 text-xs mt-4'>
+          🔒 Your information is confidential and never shared.
+        </p>
+      </form>
+    </div>
   )
 }
 

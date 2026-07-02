@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" fill="none">
+  <circle cx="50" cy="50" r="48" fill="url(#ocdBg)"/>
+  <defs>
+    <linearGradient id="ocdBg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#EEF2FF"/>
+      <stop offset="100%" stop-color="#EDE9FE"/>
+    </linearGradient>
+  </defs>
+  <!-- Loop/cycle symbol for OCD -->
+  <path d="M50 25C35 25 25 35 25 50s10 25 25 25 25-10 25-25" stroke="#4F46E5" stroke-width="3" stroke-linecap="round" fill="none"/>
+  <path d="M75 50c0 5-1.5 9.5-4 13" stroke="#8B5CF6" stroke-width="3" stroke-linecap="round" fill="none"/>
+  <!-- Arrow on loop -->
+  <path d="M73 40l2 10 10-2" stroke="#4F46E5" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+  <!-- Checkmark in center -->
+  <path d="M40 50l7 7 13-14" stroke="#059669" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+</svg>

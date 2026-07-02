@@ -4,10 +4,9 @@ import SpecialityMenu from '../components/SpecialityMenu'
 import TopDoctors from '../components/TopDoctors'
 import Banner from '../components/Banner'
 
-
 const Home = () => {
   return (
-    <div>
+    <div className='min-h-screen' style={{ background: 'linear-gradient(180deg, #F8F7FF 0%, #FFFFFF 100%)' }}>
       <Header />
       <SpecialityMenu />
       <TopDoctors />

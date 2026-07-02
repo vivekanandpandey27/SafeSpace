@@ -16,38 +16,60 @@ const Navbar = () => {
   }
 
   return (
-    <div className='flex items-center justify-between text-sm pt-2 pb-0 border-b border-b-gray-400'>
-      <div className="w-28 h-28 overflow-hidden">
-        <img
-          onClick={() => navigate('/')}
-          src={assets.logo || '/fallback-logo.png'}
-          alt="Logo"
-          className="w-full h-full object-cover object-center cursor-pointer"
-        />
+    <nav className='navbar-glass flex items-center justify-between text-sm px-4 sm:px-8 py-3 mb-0'>
+      {/* ─── Logo ─────────────────────────────── */}
+      <div
+        className="flex items-center gap-2 cursor-pointer group"
+        onClick={() => navigate('/')}
+      >
+        <div className="w-10 h-10 rounded-xl flex items-center justify-center"
+          style={{ background: 'linear-gradient(135deg, #4F46E5, #8B5CF6)' }}>
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
+            <path d="M12 2C8 2 5 5.5 5 9c0 5 7 13 7 13s7-8 7-13c0-3.5-3-7-7-7z" fill="white" opacity="0.9"/>
+            <circle cx="12" cy="9" r="3" fill="white"/>
+          </svg>
+        </div>
+        <div>
+          <span className='text-xl font-heading font-bold' style={{ color: '#4F46E5', fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
+            Safe<span className='text-secondary' style={{ color: '#8B5CF6' }}>Space</span>
+          </span>
+          <p className='text-[9px] text-gray-400 leading-none tracking-wider font-body'>MENTAL HEALTH CARE</p>
+        </div>
       </div>
 
-      <ul className='hidden md:flex items-start gap-5 font-medium'>
-        <li className='pb-0.5'>
-          <NavLink to='/' className={({ isActive }) => isActive ? 'border-b-2 border-primary' : ''}>HOME</NavLink>
-        </li>
-        <li className='pb-0.5'>
-          <NavLink to='/doctors' className={({ isActive }) => isActive ? 'border-b-2 border-primary' : ''}>ALL DOCTORS</NavLink>
-        </li>
-        <li className='pb-0.5'>
-          <NavLink to='/about' className={({ isActive }) => isActive ? 'border-b-2 border-primary' : ''}>ABOUT</NavLink>
-        </li>
-        <li className='pb-0.5'>
-          <NavLink to='/contact' className={({ isActive }) => isActive ? 'border-b-2 border-primary' : ''}>CONTACT</NavLink>
-        </li>
+      {/* ─── Desktop Nav ─────────────────────── */}
+      <ul className='hidden md:flex items-center gap-1 font-medium'>
+        {[
+          { to: '/', label: 'HOME' },
+          { to: '/doctors', label: 'OUR THERAPISTS' },
+          { to: '/about', label: 'ABOUT' },
+          { to: '/contact', label: 'CONTACT' },
+        ].map(({ to, label }) => (
+          <li key={to}>
+            <NavLink
+              to={to}
+              className={({ isActive }) =>
+                `px-4 py-2 rounded-full text-xs tracking-wider transition-all duration-200 ${
+                  isActive
+                    ? 'text-white font-semibold'
+                    : 'text-gray-600 hover:text-primary hover:bg-indigo-50'
+                }`
+              }
+              style={({ isActive }) => isActive ? { background: 'linear-gradient(135deg, #4F46E5, #8B5CF6)' } : {}}
+            >
+              {label}
+            </NavLink>
+          </li>
+        ))}
       </ul>
 
-      <div className='flex items-center gap-4'>
-
-        {/* ✅ Admin Panel Button - show only on home page  */}
+      {/* ─── Right Actions ───────────────────── */}
+      <div className='flex items-center gap-3'>
+        {/* Admin Panel – home page only */}
         {location.pathname === '/' && (
           <button
             onClick={() => window.open('https://appointy-six.vercel.app', '_blank')}
-            className='bg-primary text-white text-xs px-4 py-2 rounded-full hover:bg-gray-700 hidden md:block'
+            className='text-xs px-4 py-2 rounded-full border border-indigo-200 text-primary hover:bg-primary hover:text-white transition-all duration-200 hidden md:block font-medium'
           >
             Admin Panel
           </button>
@@ -55,42 +77,100 @@ const Navbar = () => {
 
         {token && userData ? (
           <div className='flex items-center gap-2 cursor-pointer group relative'>
-            <img className='w-12 rounded-full' src={userData.image || '/fallback-user.png'} alt="profile" />
+            <div className='w-10 h-10 rounded-full overflow-hidden ring-2 ring-indigo-200 ring-offset-1 transition-all group-hover:ring-primary'>
+              <img className='w-full h-full object-cover' src={userData.image || '/fallback-user.png'} alt="profile" />
+            </div>
             <img className='w-2.5' src={assets.dropdown_icon || '/fallback-icon.png'} alt="dropdown" />
-            <div className='absolute top-0 right-0 pt-14 text-base font-medium text-gray-600 z-20 hidden group-hover:block'>
-              <div className='min-w-48 bg-stone-100 rounded flex flex-col gap-4 p-4'>
-                <p onClick={() => navigate('my-profile')} className='hover:text-black cursor-pointer'>My Profile</p>
-                <p onClick={() => navigate('my-appointments')} className='hover:text-black cursor-pointer'>My Appointments</p>
-                <p onClick={logout} className='hover:text-black cursor-pointer'>Logout</p>
+            <div className='absolute top-0 right-0 pt-14 text-base font-medium z-20 hidden group-hover:block'>
+              <div className='min-w-52 bg-white rounded-2xl shadow-card-hover border border-indigo-50 flex flex-col gap-1 p-3 animate-fade-in'>
+                <p onClick={() => navigate('my-profile')}
+                  className='px-4 py-2.5 rounded-xl hover:bg-indigo-50 hover:text-primary cursor-pointer text-gray-600 text-sm transition-all duration-150 font-body'>
+                  👤 My Profile
+                </p>
+                <p onClick={() => navigate('my-appointments')}
+                  className='px-4 py-2.5 rounded-xl hover:bg-indigo-50 hover:text-primary cursor-pointer text-gray-600 text-sm transition-all duration-150 font-body'>
+                  📅 My Sessions
+                </p>
+                <hr className='border-indigo-50 my-1' />
+                <p onClick={logout}
+                  className='px-4 py-2.5 rounded-xl hover:bg-red-50 hover:text-red-500 cursor-pointer text-gray-600 text-sm transition-all duration-150 font-body'>
+                  🚪 Logout
+                </p>
               </div>
             </div>
           </div>
         ) : (
           <button
             onClick={() => navigate('/login')}
-            className='bg-primary text-white px-8 py-3 rounded-full font-light hidden md:block'
+            className='btn-primary hidden md:flex items-center gap-2 text-sm px-5 py-2.5'
           >
-            Create Account
+            <span>Get Started</span>
+            <svg width="14" height="14" viewBox="0 0 16 16" fill="none">
+              <path d="M3 8h10M9 4l4 4-4 4" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+            </svg>
           </button>
         )}
 
-        <img onClick={() => setShowMenu(true)} className='w-6 md:hidden' src={assets.menu_icon} alt="" />
+        {/* Mobile menu toggle */}
+        <img
+          onClick={() => setShowMenu(true)}
+          className='w-6 md:hidden cursor-pointer'
+          src={assets.menu_icon}
+          alt="menu"
+        />
 
-        {/* ---- Mobile Menu ---- */}
-        <div className={`md:hidden ${showMenu ? 'fixed w-full' : 'h-0 w-0'} right-0 top-0 bottom-0 z-20 overflow-hidden bg-white transition-all`}>
-          <div className='flex items-center justify-between px-5 py-6'>
-            <img src={assets.logo} className='w-36' alt="" />
-            <img onClick={() => setShowMenu(false)} src={assets.cross_icon} className='w-7' alt="" />
+        {/* ─── Mobile Full-Screen Menu ─────── */}
+        <div className={`md:hidden fixed inset-0 z-50 transition-all duration-300 ${showMenu ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'}`}>
+          {/* Backdrop */}
+          <div
+            className='absolute inset-0'
+            style={{ background: 'linear-gradient(135deg, #1e1b4b 0%, #312e81 50%, #4C1D95 100%)' }}
+            onClick={() => setShowMenu(false)}
+          />
+          {/* Panel */}
+          <div className={`absolute right-0 top-0 bottom-0 w-72 bg-white shadow-2xl transition-transform duration-300 flex flex-col ${showMenu ? 'translate-x-0' : 'translate-x-full'}`}>
+            <div className='flex items-center justify-between px-6 py-5 border-b border-indigo-50'>
+              <div className='flex items-center gap-2'>
+                <div className='w-8 h-8 rounded-lg flex items-center justify-center' style={{ background: 'linear-gradient(135deg, #4F46E5, #8B5CF6)' }}>
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
+                    <path d="M12 2C8 2 5 5.5 5 9c0 5 7 13 7 13s7-8 7-13c0-3.5-3-7-7-7z" fill="white"/>
+                    <circle cx="12" cy="9" r="3" fill="white" opacity="0.7"/>
+                  </svg>
+                </div>
+                <span className='font-bold text-primary' style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>SafeSpace</span>
+              </div>
+              <img onClick={() => setShowMenu(false)} src={assets.cross_icon} className='w-6 cursor-pointer opacity-60 hover:opacity-100' alt="close" />
+            </div>
+
+            <ul className='flex flex-col gap-1 mt-4 px-4 flex-1'>
+              {[
+                { to: '/', label: '🏠 Home' },
+                { to: '/doctors', label: '💼 Our Therapists' },
+                { to: '/about', label: 'ℹ️ About' },
+                { to: '/contact', label: '📞 Contact' },
+              ].map(({ to, label }) => (
+                <NavLink key={to} onClick={() => setShowMenu(false)} to={to}>
+                  <p className='px-4 py-3 rounded-xl font-medium text-gray-600 hover:bg-indigo-50 hover:text-primary transition-all duration-150 text-sm'>
+                    {label}
+                  </p>
+                </NavLink>
+              ))}
+            </ul>
+
+            <div className='p-4 border-t border-indigo-50'>
+              {!token && (
+                <button
+                  onClick={() => { navigate('/login'); setShowMenu(false) }}
+                  className='btn-primary w-full text-sm py-3'
+                >
+                  Get Started
+                </button>
+              )}
+            </div>
           </div>
-          <ul className='flex flex-col items-center gap-2 mt-5 px-5 text-lg font-medium'>
-            <NavLink onClick={() => setShowMenu(false)} to='/'><p className='px-4 py-2 rounded full inline-block'>HOME</p></NavLink>
-            <NavLink onClick={() => setShowMenu(false)} to='/doctors' ><p className='px-4 py-2 rounded full inline-block'>ALL DOCTORS</p></NavLink>
-            <NavLink onClick={() => setShowMenu(false)} to='/about' ><p className='px-4 py-2 rounded full inline-block'>ABOUT</p></NavLink>
-            <NavLink onClick={() => setShowMenu(false)} to='/contact' ><p className='px-4 py-2 rounded full inline-block'>CONTACT</p></NavLink>
-          </ul>
         </div>
       </div>
-    </div>
+    </nav>
   )
 }
 

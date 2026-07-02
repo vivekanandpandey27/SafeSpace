@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" fill="none">
+  <circle cx="50" cy="50" r="48" fill="url(#cbtBg)"/>
+  <defs>
+    <linearGradient id="cbtBg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#EEF2FF"/>
+      <stop offset="100%" stop-color="#EDE9FE"/>
+    </linearGradient>
+  </defs>
+  <!-- Two thought bubbles connecting (CBT - thoughts becoming behaviors) -->
+  <rect x="22" y="28" width="24" height="18" rx="9" fill="#C7D2FE" stroke="#4F46E5" stroke-width="2"/>
+  <text x="34" y="41" text-anchor="middle" fill="#4F46E5" font-size="9" font-weight="bold" font-family="sans-serif">T</text>
+  <rect x="54" y="28" width="24" height="18" rx="9" fill="#EDE9FE" stroke="#8B5CF6" stroke-width="2"/>
+  <text x="66" y="41" text-anchor="middle" fill="#8B5CF6" font-size="9" font-weight="bold" font-family="sans-serif">B</text>
+  <!-- Arrow connecting -->
+  <path d="M46 37h8" stroke="#4F46E5" stroke-width="2" stroke-linecap="round"/>
+  <path d="M52 34l4 3-4 3" stroke="#4F46E5" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+  <!-- Heart below = result -->
+  <rect x="35" y="58" width="30" height="18" rx="9" fill="#4F46E5"/>
+  <path d="M44 67c0-2 2-3.5 3.5-3.5 1 0 2 .5 2.5 1.5.5-1 1.5-1.5 2.5-1.5C54 63.5 56 65 56 67c0 3.5-6 7-6 7s-6-3.5-6-7z" fill="white"/>
+  <!-- Connecting line -->
+  <path d="M50 46v12" stroke="#6366F1" stroke-width="2" stroke-dasharray="2,2"/>
+</svg>

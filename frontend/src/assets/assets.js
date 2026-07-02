@@ -30,12 +30,14 @@ import doc12 from './doc12.png'
 import doc13 from './doc13.png'
 import doc14 from './doc14.png'
 import doc15 from './doc15.png'
-import Dermatologist from './Dermatologist.svg'
-import Gastroenterologist from './Gastroenterologist.svg'
-import General_physician from './General_physician.svg'
-import Gynecologist from './Gynecologist.svg'
-import Neurologist from './Neurologist.svg'
-import Pediatricians from './Pediatricians.svg'
+import Psychiatrist from './Psychiatrist.svg'
+import Psychologist from './Psychologist.svg'
+import ADHD_Specialist from './ADHD_Specialist.svg'
+import OCD_Therapist from './OCD_Therapist.svg'
+import CBT_Therapist from './CBT_Therapist.svg'
+import Anxiety_Stress from './Anxiety_Stress.svg'
+import Depression_Counselor from './Depression_Counselor.svg'
+import Trauma_PTSD from './Trauma_PTSD.svg'
 
 
 export const assets = {
@@ -60,28 +62,36 @@ export const assets = {
 
 export const specialityData = [
     {
-        speciality: 'General physician',
-        image: General_physician
+        speciality: 'Psychiatrist',
+        image: Psychiatrist
     },
     {
-        speciality: 'Gynecologist',
-        image: Gynecologist
+        speciality: 'Psychologist',
+        image: Psychologist
     },
     {
-        speciality: 'Dermatologist',
-        image: Dermatologist
+        speciality: 'ADHD Specialist',
+        image: ADHD_Specialist
     },
     {
-        speciality: 'Pediatricians',
-        image: Pediatricians
+        speciality: 'OCD Therapist',
+        image: OCD_Therapist
     },
     {
-        speciality: 'Neurologist',
-        image: Neurologist
+        speciality: 'CBT Therapist',
+        image: CBT_Therapist
     },
     {
-        speciality: 'Gastroenterologist',
-        image: Gastroenterologist
+        speciality: 'Anxiety & Stress',
+        image: Anxiety_Stress
+    },
+    {
+        speciality: 'Depression Counselor',
+        image: Depression_Counselor
+    },
+    {
+        speciality: 'Trauma & PTSD',
+        image: Trauma_PTSD
     },
 ]
 
@@ -90,10 +100,10 @@ export const doctors = [
         _id: 'doc1',
         name: 'Dr. Richard James',
         image: doc1,
-        speciality: 'General physician',
-        degree: 'MBBS',
-        experience: '4 Years',
-        about: 'Dr. Davis has a strong commitment to delivering comprehensive medical care, focusing on preventive medicine, early diagnosis, and effective treatment strategies. Dr. Davis has a strong commitment to delivering comprehensive medical care, focusing on preventive medicine, early diagnosis, and effective treatment strategies.',
+        speciality: 'Psychiatrist',
+        degree: 'MD, Psychiatry',
+        experience: '8 Years',
+        about: 'Dr. James is a compassionate psychiatrist specializing in mood disorders, anxiety, and complex mental health conditions. He combines evidence-based pharmacotherapy with psychotherapeutic approaches to provide holistic, patient-centered care. His practice emphasizes building trust, reducing stigma, and empowering patients on their healing journey.',
         fees: 50,
         address: {
             line1: '17th Cross, Richmond',
@@ -104,10 +114,10 @@ export const doctors = [
         _id: 'doc2',
         name: 'Dr. Emily Larson',
         image: doc2,
-        speciality: 'Gynecologist',
-        degree: 'MBBS',
-        experience: '3 Years',
-        about: 'Dr. Davis has a strong commitment to delivering comprehensive medical care, focusing on preventive medicine, early diagnosis, and effective treatment strategies. Dr. Davis has a strong commitment to delivering comprehensive medical care, focusing on preventive medicine, early diagnosis, and effective treatment strategies.',
+        speciality: 'Psychologist',
+        degree: 'PhD, Clinical Psychology',
+        experience: '6 Years',
+        about: 'Dr. Larson is a licensed clinical psychologist with expertise in cognitive-behavioral therapy, trauma-informed care, and relationship counseling. She creates a safe and non-judgmental space for clients to explore their emotions, develop coping strategies, and build lasting resilience.',
         fees: 60,
         address: {
             line1: '27th Cross, Richmond',
@@ -118,10 +128,10 @@ export const doctors = [
         _id: 'doc3',
         name: 'Dr. Sarah Patel',
         image: doc3,
-        speciality: 'Dermatologist',
-        degree: 'MBBS',
-        experience: '1 Years',
-        about: 'Dr. Davis has a strong commitment to delivering comprehensive medical care, focusing on preventive medicine, early diagnosis, and effective treatment strategies. Dr. Davis has a strong commitment to delivering comprehensive medical care, focusing on preventive medicine, early diagnosis, and effective treatment strategies.',
+        speciality: 'ADHD Specialist',
+        degree: 'MD, Child & Adult Psychiatry',
+        experience: '5 Years',
+        about: 'Dr. Patel specializes in diagnosing and treating ADHD across all age groups. She uses comprehensive assessment tools and personalized treatment plans combining behavioral therapy, coaching strategies, and medication management when needed to help patients thrive in daily life.',
         fees: 30,
         address: {
             line1: '37th Cross, Richmond',
@@ -132,10 +142,10 @@ export const doctors = [
         _id: 'doc4',
         name: 'Dr. Christopher Lee',
         image: doc4,
-        speciality: 'Pediatricians',
-        degree: 'MBBS',
-        experience: '2 Years',
-        about: 'Dr. Davis has a strong commitment to delivering comprehensive medical care, focusing on preventive medicine, early diagnosis, and effective treatment strategies. Dr. Davis has a strong commitment to delivering comprehensive medical care, focusing on preventive medicine, early diagnosis, and effective treatment strategies.',
+        speciality: 'OCD Therapist',
+        degree: 'PsyD, Clinical Psychology',
+        experience: '7 Years',
+        about: 'Dr. Lee is an OCD and anxiety specialist who uses Exposure and Response Prevention (ERP) therapy, the gold-standard treatment for OCD. He helps patients confront their fears systematically and reduce compulsive behaviors, guiding them toward a life no longer ruled by intrusive thoughts.',
         fees: 40,
         address: {
             line1: '47th Cross, Richmond',
@@ -146,10 +156,10 @@ export const doctors = [
         _id: 'doc5',
         name: 'Dr. Jennifer Garcia',
         image: doc5,
-        speciality: 'Neurologist',
-        degree: 'MBBS',
-        experience: '4 Years',
-        about: 'Dr. Davis has a strong commitment to delivering comprehensive medical care, focusing on preventive medicine, early diagnosis, and effective treatment strategies. Dr. Davis has a strong commitment to delivering comprehensive medical care, focusing on preventive medicine, early diagnosis, and effective treatment strategies.',
+        speciality: 'CBT Therapist',
+        degree: 'MSc, Cognitive Behavioural Therapy',
+        experience: '9 Years',
+        about: 'Dr. Garcia is a certified CBT therapist helping individuals overcome negative thought patterns, phobias, depression, and panic disorders. Her structured, goal-oriented approach equips clients with practical tools they can use independently, creating lasting positive change.',
         fees: 50,
         address: {
             line1: '57th Cross, Richmond',
@@ -160,10 +170,10 @@ export const doctors = [
         _id: 'doc6',
         name: 'Dr. Andrew Williams',
         image: doc6,
-        speciality: 'Neurologist',
-        degree: 'MBBS',
-        experience: '4 Years',
-        about: 'Dr. Davis has a strong commitment to delivering comprehensive medical care, focusing on preventive medicine, early diagnosis, and effective treatment strategies. Dr. Davis has a strong commitment to delivering comprehensive medical care, focusing on preventive medicine, early diagnosis, and effective treatment strategies.',
+        speciality: 'Anxiety & Stress',
+        degree: 'MD, Psychiatry',
+        experience: '6 Years',
+        about: 'Dr. Williams specializes in anxiety disorders, stress management, and burnout recovery. He integrates mindfulness-based stress reduction (MBSR), acceptance and commitment therapy (ACT), and pharmacotherapy to help clients regain balance, calm, and confidence in their lives.',
         fees: 50,
         address: {
             line1: '57th Cross, Richmond',
@@ -174,10 +184,10 @@ export const doctors = [
         _id: 'doc7',
         name: 'Dr. Christopher Davis',
         image: doc7,
-        speciality: 'General physician',
-        degree: 'MBBS',
-        experience: '4 Years',
-        about: 'Dr. Davis has a strong commitment to delivering comprehensive medical care, focusing on preventive medicine, early diagnosis, and effective treatment strategies. Dr. Davis has a strong commitment to delivering comprehensive medical care, focusing on preventive medicine, early diagnosis, and effective treatment strategies.',
+        speciality: 'Psychiatrist',
+        degree: 'MD, Psychiatry',
+        experience: '11 Years',
+        about: 'Dr. Davis brings over a decade of experience in adult psychiatry. He specializes in bipolar disorder, schizophrenia, and treatment-resistant depression. His compassionate, evidence-based approach focuses on medication optimization and long-term mental wellness planning.',
         fees: 50,
         address: {
             line1: '17th Cross, Richmond',
@@ -188,10 +198,10 @@ export const doctors = [
         _id: 'doc8',
         name: 'Dr. Timothy White',
         image: doc8,
-        speciality: 'Gynecologist',
-        degree: 'MBBS',
-        experience: '3 Years',
-        about: 'Dr. Davis has a strong commitment to delivering comprehensive medical care, focusing on preventive medicine, early diagnosis, and effective treatment strategies. Dr. Davis has a strong commitment to delivering comprehensive medical care, focusing on preventive medicine, early diagnosis, and effective treatment strategies.',
+        speciality: 'Depression Counselor',
+        degree: 'MA, Counselling Psychology',
+        experience: '4 Years',
+        about: 'Dr. White is a compassionate depression counselor who helps individuals navigate through feelings of hopelessness, grief, and low mood. Using person-centered therapy and behavioral activation techniques, he guides clients toward rediscovering meaning, purpose, and joy.',
         fees: 60,
         address: {
             line1: '27th Cross, Richmond',
@@ -202,10 +212,10 @@ export const doctors = [
         _id: 'doc9',
         name: 'Dr. Ava Mitchell',
         image: doc9,
-        speciality: 'Dermatologist',
-        degree: 'MBBS',
-        experience: '1 Years',
-        about: 'Dr. Davis has a strong commitment to delivering comprehensive medical care, focusing on preventive medicine, early diagnosis, and effective treatment strategies. Dr. Davis has a strong commitment to delivering comprehensive medical care, focusing on preventive medicine, early diagnosis, and effective treatment strategies.',
+        speciality: 'Trauma & PTSD',
+        degree: 'PhD, Trauma Psychology',
+        experience: '7 Years',
+        about: 'Dr. Mitchell is a trauma-informed therapist specializing in PTSD, complex trauma, and emotional dysregulation. She uses EMDR (Eye Movement Desensitization and Reprocessing) and somatic therapies to help survivors process traumatic experiences and reclaim their sense of safety.',
         fees: 30,
         address: {
             line1: '37th Cross, Richmond',
@@ -216,10 +226,10 @@ export const doctors = [
         _id: 'doc10',
         name: 'Dr. Jeffrey King',
         image: doc10,
-        speciality: 'Pediatricians',
-        degree: 'MBBS',
-        experience: '2 Years',
-        about: 'Dr. Davis has a strong commitment to delivering comprehensive medical care, focusing on preventive medicine, early diagnosis, and effective treatment strategies. Dr. Davis has a strong commitment to delivering comprehensive medical care, focusing on preventive medicine, early diagnosis, and effective treatment strategies.',
+        speciality: 'ADHD Specialist',
+        degree: 'MD, Behavioral Neurology',
+        experience: '10 Years',
+        about: 'Dr. King is a behavioral neurologist and ADHD specialist with expertise in both pediatric and adult ADHD presentations. He provides comprehensive evaluations, executive function coaching, and multimodal treatment planning to unlock each patient\'s full potential.',
         fees: 40,
         address: {
             line1: '47th Cross, Richmond',
@@ -230,10 +240,10 @@ export const doctors = [
         _id: 'doc11',
         name: 'Dr. Zoe Kelly',
         image: doc11,
-        speciality: 'Neurologist',
-        degree: 'MBBS',
-        experience: '4 Years',
-        about: 'Dr. Davis has a strong commitment to delivering comprehensive medical care, focusing on preventive medicine, early diagnosis, and effective treatment strategies. Dr. Davis has a strong commitment to delivering comprehensive medical care, focusing on preventive medicine, early diagnosis, and effective treatment strategies.',
+        speciality: 'Anxiety & Stress',
+        degree: 'DClinPsy, Clinical Psychology',
+        experience: '8 Years',
+        about: 'Dr. Kelly is a specialist in anxiety, panic disorder, and social anxiety. She uses an integrative approach combining CBT, breathing regulation, and nervous system regulation techniques. Her warm, collaborative style helps clients build courage and reclaim their lives from anxiety.',
         fees: 50,
         address: {
             line1: '57th Cross, Richmond',
@@ -244,10 +254,10 @@ export const doctors = [
         _id: 'doc12',
         name: 'Dr. Patrick Harris',
         image: doc12,
-        speciality: 'Gastroenterologist',
-        degree: 'MBBS',
-        experience: '4 Years',
-        about: 'Dr. Davis has a strong commitment to delivering comprehensive medical care, focusing on preventive medicine, early diagnosis, and effective treatment strategies. Dr. Davis has a strong commitment to delivering comprehensive medical care, focusing on preventive medicine, early diagnosis, and effective treatment strategies.',
+        speciality: 'CBT Therapist',
+        degree: 'MSc, Psychological Therapies',
+        experience: '6 Years',
+        about: 'Dr. Harris is an accredited CBT therapist skilled in treating health anxiety, perfectionism, and workplace-related stress. He tailors each therapy program to the individual, using structured sessions and practical exercises that clients can continue independently after therapy ends.',
         fees: 50,
         address: {
             line1: '57th Cross, Richmond',
@@ -258,10 +268,10 @@ export const doctors = [
         _id: 'doc13',
         name: 'Dr. Chloe Evans',
         image: doc13,
-        speciality: 'General physician',
-        degree: 'MBBS',
-        experience: '4 Years',
-        about: 'Dr. Davis has a strong commitment to delivering comprehensive medical care, focusing on preventive medicine, early diagnosis, and effective treatment strategies. Dr. Davis has a strong commitment to delivering comprehensive medical care, focusing on preventive medicine, early diagnosis, and effective treatment strategies.',
+        speciality: 'Psychologist',
+        degree: 'PhD, Psychology',
+        experience: '5 Years',
+        about: 'Dr. Evans is a clinical psychologist specializing in relationship issues, self-esteem, and identity challenges. She uses a blend of psychodynamic and humanistic approaches, helping clients gain insight into unconscious patterns and develop a stronger, more authentic sense of self.',
         fees: 50,
         address: {
             line1: '17th Cross, Richmond',
@@ -272,10 +282,10 @@ export const doctors = [
         _id: 'doc14',
         name: 'Dr. Ryan Martinez',
         image: doc14,
-        speciality: 'Gynecologist',
-        degree: 'MBBS',
-        experience: '3 Years',
-        about: 'Dr. Davis has a strong commitment to delivering comprehensive medical care, focusing on preventive medicine, early diagnosis, and effective treatment strategies. Dr. Davis has a strong commitment to delivering comprehensive medical care, focusing on preventive medicine, early diagnosis, and effective treatment strategies.',
+        speciality: 'Depression Counselor',
+        degree: 'MA, Psychotherapy',
+        experience: '9 Years',
+        about: 'Dr. Martinez specializes in depression, emotional exhaustion, and life transitions. He uses an integrative therapeutic model combining motivational interviewing, mindfulness, and solution-focused therapy to help clients break free from depressive cycles and rebuild a fulfilling life.',
         fees: 60,
         address: {
             line1: '27th Cross, Richmond',
@@ -286,10 +296,10 @@ export const doctors = [
         _id: 'doc15',
         name: 'Dr. Amelia Hill',
         image: doc15,
-        speciality: 'Dermatologist',
-        degree: 'MBBS',
-        experience: '1 Years',
-        about: 'Dr. Davis has a strong commitment to delivering comprehensive medical care, focusing on preventive medicine, early diagnosis, and effective treatment strategies. Dr. Davis has a strong commitment to delivering comprehensive medical care, focusing on preventive medicine, early diagnosis, and effective treatment strategies.',
+        speciality: 'Trauma & PTSD',
+        degree: 'MSc, Trauma-Informed Therapy',
+        experience: '12 Years',
+        about: 'Dr. Hill is an expert in complex trauma, childhood adversity, and dissociative disorders. With over a decade of experience, she uses Sensorimotor Psychotherapy and narrative approaches to help clients move from survival to genuine healing, building resilience and post-traumatic growth.',
         fees: 30,
         address: {
             line1: '37th Cross, Richmond',

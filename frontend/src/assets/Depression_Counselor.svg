@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" fill="none">
+  <circle cx="50" cy="50" r="48" fill="url(#depBg)"/>
+  <defs>
+    <linearGradient id="depBg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#EEF2FF"/>
+      <stop offset="100%" stop-color="#EDE9FE"/>
+    </linearGradient>
+  </defs>
+  <!-- Flower / growth from darkness = depression recovery -->
+  <!-- Stem -->
+  <line x1="50" y1="72" x2="50" y2="48" stroke="#059669" stroke-width="3" stroke-linecap="round"/>
+  <!-- Leaves -->
+  <path d="M50 60 Q40 55 38 48 Q45 50 50 60z" fill="#6EE7B7"/>
+  <path d="M50 55 Q60 50 62 43 Q55 45 50 55z" fill="#6EE7B7"/>
+  <!-- Flower head -->
+  <circle cx="50" cy="40" r="10" fill="#8B5CF6"/>
+  <circle cx="50" cy="32" r="5" fill="#DDD6FE"/>
+  <circle cx="58" cy="36" r="5" fill="#DDD6FE"/>
+  <circle cx="58" cy="44" r="5" fill="#DDD6FE"/>
+  <circle cx="50" cy="48" r="5" fill="#DDD6FE"/>
+  <circle cx="42" cy="44" r="5" fill="#DDD6FE"/>
+  <circle cx="42" cy="36" r="5" fill="#DDD6FE"/>
+  <circle cx="50" cy="40" r="6" fill="#4F46E5"/>
+  <!-- Ground -->
+  <path d="M30 73 Q50 68 70 73" stroke="#C7D2FE" stroke-width="2" fill="none" stroke-linecap="round"/>
+</svg>
