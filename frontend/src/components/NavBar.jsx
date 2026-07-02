@@ -68,7 +68,7 @@ const Navbar = () => {
         {/* Admin Panel – home page only */}
         {location.pathname === '/' && (
           <button
-            onClick={() => window.open('https://appointy-six.vercel.app', '_blank')}
+            onClick={() => window.open('http://localhost:5174', '_blank')}
             className='text-xs px-4 py-2 rounded-full border border-indigo-200 text-primary hover:bg-primary hover:text-white transition-all duration-200 hidden md:block font-medium'
           >
             Admin Panel
