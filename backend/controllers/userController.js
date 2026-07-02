@@ -6,8 +6,9 @@ import appointmentModel from "../models/appointmentModel.js";
 import jwt from "jsonwebtoken";
 import {v2 as cloudinary} from 'cloudinary'  
 import razorpay from 'razorpay';
+import { OAuth2Client } from 'google-auth-library';
 
-    
+const googleClient = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
 
 // API to register user
 const registerUser = async (req, res) => {
@@ -283,4 +284,47 @@ const verifyRazorpay = async (req, res) => {
 }
 
 
-export {registerUser, loginUser, getProfile, updateProfile, bookAppointment, listAppointment, cancelAppointment, paymentRazorpay, verifyRazorpay}
+// API to authenticate user via Google OAuth
+const googleAuth = async (req, res) => {
+    try {
+        const { googleId, email, name, picture } = req.body;
+
+        if (!email || !googleId) {
+            return res.json({ success: false, message: 'Invalid Google credentials' });
+        }
+
+        // Check if user already exists by email
+        let user = await userModel.findOne({ email });
+
+        if (user) {
+            // Existing user — link Google account if not already linked
+            if (!user.googleId) {
+                user.googleId = googleId;
+                user.authProvider = 'google';
+                await user.save();
+            }
+        } else {
+            // New user — create account automatically from Google profile
+            user = new userModel({
+                name,
+                email,
+                image: picture || 'https://cdn-icons-png.flaticon.com/512/149/149071.png',
+                googleId,
+                authProvider: 'google',
+            });
+            await user.save();
+        }
+
+        // Issue your own JWT (same as normal login flow)
+        const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET);
+        res.json({ success: true, token });
+
+    } catch (error) {
+        console.log(error);
+        res.json({ success: false, message: error.message });
+    }
+}
+
+
+export {registerUser, loginUser, getProfile, updateProfile, bookAppointment, listAppointment, cancelAppointment, paymentRazorpay, verifyRazorpay, googleAuth}
+
