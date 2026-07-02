@@ -153,5 +153,23 @@ const adminDashboard = async (req, res) => {
     }
 }
 
+// API to delete a doctor (admin only)
+const deleteDoctor = async (req, res) => {
+    try {
+        const { docId } = req.body
+        if (!docId) return res.json({ success: false, message: 'Doctor ID required' })
 
-export { loginAdmin, addDoctor, allDoctors, appointmentsAdmin, appointmentCancel, adminDashboard }
+        await doctorModel.findByIdAndDelete(docId)
+
+        // Cancel all appointments for this doctor
+        await appointmentModel.updateMany({ docId }, { cancelled: true })
+
+        res.json({ success: true, message: 'Therapist removed successfully' })
+    } catch (error) {
+        console.log(error)
+        res.json({ success: false, message: error.message })
+    }
+}
+
+
+export { loginAdmin, addDoctor, allDoctors, appointmentsAdmin, appointmentCancel, adminDashboard, deleteDoctor }
