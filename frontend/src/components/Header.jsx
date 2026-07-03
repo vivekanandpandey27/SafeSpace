@@ -68,7 +68,7 @@ const Header = () => {
             {/* ─── Right: Doctor Image ───────────────── */}
             <div className='md:w-1/2 relative flex items-end justify-center md:justify-end'>
                 <img
-                    className='w-full md:absolute bottom-0 h-auto max-h-[500px] object-contain object-bottom rounded-lg'
+                    className='w-full md:absolute bottom-0 h-auto max-h-[500px] object-contain object-bottom'
                     src={assets.header_img}
                     alt="Mental health specialist"
                 />
