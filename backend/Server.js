@@ -22,7 +22,7 @@ connectCloudinary()
 // --- RATE LIMITER CONFIGURATION FOR ALL API ENDPOINTS ---
 const apiLimiter = rateLimit({
     windowMs: 15 * 60 * 1000, // 15 minutes window
-    limit: 3, // Limit each IP to 100 requests per windowMs
+    limit: 100, // Limit each IP to 100 requests per windowMs
     message: { success: false, message: 'Too many requests from this IP, please try again later.' },
     statusCode: 429, // Standard status code for rate limiting
     standardHeaders: 'draft-7', // Draft-7 standard; returns RateLimit-* headers
@@ -47,5 +47,8 @@ app.use("/api/user", userRouter)
 //   res.send("API Working")
 // });
 
-
-app.listen(port, () => console.log(`Backend Server started on PORT:${port}`))
+if (process.env.NODE_ENV !== 'test') {
+    app.listen(port, () => console.log(`Backend Server started on PORT:${port}`))
+}
+// Export app for Vitest
+export default app;
