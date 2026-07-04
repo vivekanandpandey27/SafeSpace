@@ -47,8 +47,8 @@ app.use("/api/user", userRouter)
 //   res.send("API Working")
 // });
 
-if(process.env.NODE_ENV === 'test') {
-app.listen(port, () => console.log(`Backend Server started on PORT:${port}`))
+if (process.env.NODE_ENV !== 'test') {
+    app.listen(port, () => console.log(`Backend Server started on PORT:${port}`))
 }
-
-export default app
+// Export app for Vitest
+export default app;
