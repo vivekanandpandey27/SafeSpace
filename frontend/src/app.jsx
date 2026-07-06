@@ -4,11 +4,11 @@ import Home from './pages/Home'
 import Doctors from './pages/Doctors'
 import Login from './pages/Login'
 import About from './pages/About'
-import Contact from './pages/Contact'
+import Contact from './pages/contact'
 import MyProfile from './pages/MyProfile'
 import MyAppointment from './pages/MyAppointment'
 import Appointment from './Appointment'
-import Navbar from './components/Navbar'
+import Navbar from './components/NavBar'
 import Footer from './components/Footer'
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
