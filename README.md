@@ -160,39 +160,92 @@ graph TD
 
 ---
 
-## 🚀 Local Development Setup
+## 🚀 Detailed Local Development Setup
 
-Want to run the entire cluster on your local machine? It takes less than 5 minutes.
+We offer two ways to run this project locally: **The Docker Way** (Recommended, 1 command) and **The Manual Way** (Running standard Node/React scripts). 
 
-### 1. Prerequisites
-- [Docker Desktop](https://www.docker.com/products/docker-desktop/) installed and running.
-- Git installed.
+### Prerequisites
+- [Git](https://git-scm.com/) installed on your machine.
+- [Docker Desktop](https://www.docker.com/products/docker-desktop/) (If running via Docker).
+- [Node.js v20+](https://nodejs.org/en) (If running manually).
 
-### 2. Clone the Repository
+### Step 1: Clone the Repository
 ```bash
 git clone https://github.com/vivekanandpandey27/SafeSpace.git
 cd SafeSpace
 ```
 
-### 3. Environment Variables
-Create a `.env` file in all three directories (`/backend`, `/frontend`, `/admin`) based on the provided `.env.example` templates. You will need:
-- MongoDB Connection String
-- Cloudinary API Keys
-- RazorPay API Keys
-- Google OAuth Client ID
-- JWT Secret String
+### Step 2: Configure Environment Variables (.env)
+You must create a `.env` file inside **each** of the three microservice folders (`backend`, `frontend`, `admin`). Here is exactly what goes in each file:
 
-### 4. Fire It Up!
-Leverage Docker Compose to build and start the entire Microservices cluster in one command:
+**📍 `backend/.env`**
+```env
+PORT=5000
+MONGODB_URI=mongodb+srv://<your_username>:<your_password>@cluster.mongodb.net/safespace
+JWT_SECRET=your_super_secret_jwt_string
+CLOUDINARY_CLOUD_NAME=your_cloudinary_name
+CLOUDINARY_API_KEY=your_cloudinary_api_key
+CLOUDINARY_API_SECRET=your_cloudinary_api_secret
+RAZORPAY_KEY_ID=your_razorpay_key_id
+RAZORPAY_KEY_SECRET=your_razorpay_key_secret
+FRONTEND_URL=http://localhost:5173
+ADMIN_URL=http://localhost:5174
+```
+
+**📍 `frontend/.env`**
+```env
+VITE_BACKEND_URL=http://localhost:5000
+VITE_RAZORPAY_KEY_ID=your_razorpay_key_id
+VITE_GOOGLE_CLIENT_ID=your_google_oauth_client_id.apps.googleusercontent.com
+```
+
+**📍 `admin/.env`**
+```env
+VITE_BACKEND_URL=http://localhost:5000
+VITE_CURRENCY=₹
+```
+
+---
+
+### Step 3: Run the Application (Choose Option A or B)
+
+#### 🐳 Option A: The Docker Way (Recommended)
+This method perfectly replicates the production cloud environment locally.
+1. Ensure Docker Desktop is running.
+2. Open a terminal in the root `SafeSpace` folder.
+3. Run the following command:
 ```bash
 docker compose up --build
 ```
-*Wait 2-3 minutes for Docker to download the Alpine Linux images and install dependencies.*
+*(Wait 2-3 minutes for Docker to download the Alpine Linux images, install all NPM packages inside the containers, and boot up the servers).*
 
-### 5. Access the Platform
-- **Frontend:** `http://localhost:5173`
-- **Admin:** `http://localhost:5174`
-- **Backend API:** `http://localhost:5000`
+#### 💻 Option B: The Manual Way (Without Docker)
+If you prefer to run the raw code on your machine for rapid development:
+1. Open **three separate terminals**.
+2. **Terminal 1 (Backend):**
+   ```bash
+   cd backend
+   npm install
+   node Server.js
+   ```
+3. **Terminal 2 (Frontend):**
+   ```bash
+   cd frontend
+   npm install
+   npm run dev
+   ```
+4. **Terminal 3 (Admin):**
+   ```bash
+   cd admin
+   npm install
+   npm run dev
+   ```
+
+### Step 4: Access the Platform
+Once the services are running, open your browser:
+- 📱 **Patient Portal:** [http://localhost:5173](http://localhost:5173)
+- 🛡️ **Admin Dashboard:** [http://localhost:5174](http://localhost:5174)
+- ⚙️ **Backend API:** [http://localhost:5000](http://localhost:5000)
 
 ---
 
