@@ -1,184 +1,186 @@
 <div align="center">
-  <img src="https://via.placeholder.com/1200x400/4f46e5/ffffff?text=SafeSpace+-+Mental+Health+Care+Platform" alt="SafeSpace Banner" />
-  
-  <h1>🧠 SafeSpace — Mental Health Care Platform</h1>
-  
-  <p>
-    <strong>A highly scalable, fully containerized Microservices platform connecting patients with certified mental health professionals.</strong>
-  </p>
 
-  [![AWS ECS](https://img.shields.io/badge/AWS-ECS-FF9900?style=for-the-badge&logo=amazonaws&logoColor=white)](https://aws.amazon.com/)
-  [![Docker](https://img.shields.io/badge/Docker-Containerized-2496ED?style=for-the-badge&logo=docker&logoColor=white)](https://www.docker.com/)
-  [![React](https://img.shields.io/badge/React-Vite-61DAFB?style=for-the-badge&logo=react&logoColor=black)](https://reactjs.org/)
-  [![Node.js](https://img.shields.io/badge/Node.js-Express-339933?style=for-the-badge&logo=nodedotjs&logoColor=white)](https://nodejs.org/)
-  [![MongoDB](https://img.shields.io/badge/MongoDB-Atlas-47A248?style=for-the-badge&logo=mongodb&logoColor=white)](https://www.mongodb.com/)
+# 🧠 SafeSpace
+### Enterprise-Grade Mental Health Care Platform
+
+**A fully containerized, cloud-native microservices platform connecting patients with certified mental health professionals — engineered for scale, security, and reliability.**
+
+[![AWS ECS](https://img.shields.io/badge/AWS-ECS-FF9900?style=for-the-badge&logo=amazonaws&logoColor=white)](https://aws.amazon.com/)
+[![Docker](https://img.shields.io/badge/Docker-Containerized-2496ED?style=for-the-badge&logo=docker&logoColor=white)](https://www.docker.com/)
+[![React](https://img.shields.io/badge/React-Vite-61DAFB?style=for-the-badge&logo=react&logoColor=black)](https://reactjs.org/)
+[![Node.js](https://img.shields.io/badge/Node.js-Express-339933?style=for-the-badge&logo=nodedotjs&logoColor=white)](https://nodejs.org/)
+[![MongoDB](https://img.shields.io/badge/MongoDB-Atlas-47A248?style=for-the-badge&logo=mongodb&logoColor=white)](https://www.mongodb.com/)
+
+[Live Demo](#-live-deployment) · [Features](#-key-features--tech-stack) · [Architecture](#️-system-architecture) · [Setup Guide](#-local-development-setup) · [Tech Stack](#-key-features--tech-stack)
+
 </div>
 
 <br/>
 
 ## 📖 Overview
 
-**SafeSpace** is an enterprise-grade, full-stack mental health consultation platform built from the ground up with modern cloud-native principles. Engineered to handle high traffic securely, it allows patients to seamlessly browse therapists, book appointments, and process payments, while providing an extensive Admin Dashboard for platform management.
+**SafeSpace** is a full-stack mental health consultation platform built from the ground up on modern cloud-native principles. It enables patients to seamlessly discover therapists, book appointments, and complete secure payments — all while giving administrators a powerful dashboard to manage the entire ecosystem.
 
-The entire infrastructure is broken down into a **Microservices Architecture**, packaged inside ultra-lightweight Docker containers, and orchestrated on **Amazon Web Services (AWS)** for maximum uptime and reliability.
+The platform is broken down into a **microservices architecture**, packaged inside lightweight Docker containers, and orchestrated on **Amazon Web Services (AWS)** for maximum uptime, security, and scalability.
 
----
+> This project was built to demonstrate deep, real-world proficiency across both full-stack web development and production-grade DevOps/Cloud engineering — not just to build an app, but to deploy it the way modern enterprise software actually ships.
 
-## 🎯 How It Works (Platform User Flows)
+<br/>
 
-The platform is designed with three distinct user roles, each with their own secure portals and specific capabilities:
+## ✨ Highlights
 
-### 👤 1. Patients (Users)
-- **Onboarding:** Users can securely create an account using traditional email/password or log in instantly via **Google OAuth 2.0**.
-- **Profile Management:** Users can update their personal details and seamlessly upload a profile picture (optimized and stored via Cloudinary).
-- **Booking Flow:** Users browse through a curated list of certified therapists, filter by specialty, and view available calendar slots.
-- **Secure Payments:** Once an open slot is selected, users securely pay for the appointment in real-time using the **RazorPay** integration.
+| 🏗️ Microservices | 🐳 Fully Dockerized | ☁️ AWS ECS/EC2 | 🔐 JWT + OAuth 2.0 | 💳 Live Payments |
+|:---:|:---:|:---:|:---:|:---:|
+| Decoupled frontend, admin & backend | Multi-stage Alpine builds | Zero-downtime rolling deploys | Bcrypt + Google Sign-In | RazorPay integration |
 
-### 🩺 2. Therapists (Doctors)
-- **Strict Onboarding:** To maintain medical integrity, therapists *cannot* sign up publicly. They must be vetted by platform administrators. Upon approval, the Admin creates their account and provisions their Login ID and Password.
-- **Dashboard:** Once logged in, therapists have access to a specialized dashboard to view upcoming appointments, manage their availability, and track their patient consultations.
+<br/>
 
-### 👑 3. Administrators (Platform Managers)
-- **Total Control:** Admins possess full oversight over the entire ecosystem through a dedicated, protected portal.
-- **Doctor Management:** Admins are exclusively responsible for vetting, adding, updating, and removing therapists from the platform.
-- **Global Oversight:** Admins can view, track, and manage all appointments, user data, and financial transactions across the platform.
+## 🎯 How It Works
 
----
+SafeSpace supports **three distinct user roles**, each with a dedicated, secure portal tailored to their responsibilities.
 
-## 🌐 Live Deployment URLs
+### 👤 Patients (Users)
+- **Onboarding** — Sign up with email/password or log in instantly via **Google OAuth 2.0**.
+- **Profile Management** — Update personal details and upload a profile picture (optimized & stored via Cloudinary).
+- **Booking Flow** — Browse certified therapists, filter by specialty, and view real-time available slots.
+- **Secure Payments** — Book and pay for appointments instantly using the **RazorPay** gateway.
 
-The platform is actively deployed and running on the internet. Experience it live:
+### 🩺 Therapists (Doctors)
+- **Vetted Onboarding** — Therapists cannot self-register. Admins vet and create their accounts, provisioning secure login credentials.
+- **Dedicated Dashboard** — View upcoming appointments, manage availability, and track patient consultations.
 
-*   📱 **Patient Portal (Frontend):** [http://safespace-health.duckdns.org:5001](http://safespace-health.duckdns.org:5001)
-*   🛡️ **Admin Dashboard:** [http://safespace-health.duckdns.org:8080](http://safespace-health.duckdns.org:8080)
-*   ⚙️ **Backend API Server:** [http://safespace-health.duckdns.org:5000](http://safespace-health.duckdns.org:5000)
+### 👑 Administrators
+- **Total Platform Control** — Full oversight through a dedicated, protected portal.
+- **Doctor Management** — Exclusively responsible for vetting, adding, updating, and removing therapists.
+- **Global Oversight** — View and manage all appointments, users, and financial transactions platform-wide.
 
-*(Note: Hosted on AWS EC2 Free Tier. Services may take a few seconds to wake up upon first request).*
+<br/>
 
----
+## 🌐 Live Deployment
 
-## 🔑 Key Methods, Features, & Technologies Used
+The platform is actively deployed and publicly accessible:
 
-Every piece of technology in this project was chosen to mirror real-world, senior-level industry standards. 
+| Portal | URL |
+|---|---|
+| 📱 **Patient Portal** | [safespace-health.duckdns.org:5001](http://safespace-health.duckdns.org:5001) |
+| 🛡️ **Admin Dashboard** | [safespace-health.duckdns.org:8080](http://safespace-health.duckdns.org:8080) |
+| ⚙️ **Backend API** | [safespace-health.duckdns.org:5000](http://safespace-health.duckdns.org:5000) |
+
+> ⚠️ **Note:** Hosted on the AWS EC2 Free Tier. Services may take a few seconds to spin up on first request.
+
+<br/>
+
+## 🔑 Key Features & Tech Stack
+
+Every technology in this stack was deliberately chosen to mirror real-world, senior-level industry standards.
 
 ### 🎨 Frontend & UI Experience
-*   **React.js & Vite:** Lightning-fast client-side rendering with instant hot-module replacement during development.
-*   **Tailwind CSS:** Highly responsive, utility-first styling for a beautiful, modern, and accessible user interface.
-*   **React Router DOM:** Seamless Client-Side Routing for a true Single Page Application (SPA) experience.
-*   **Axios:** Configured interceptors for secure HTTP requests and centralized error handling.
+- **React.js & Vite** — Lightning-fast rendering with instant hot-module replacement in development.
+- **Tailwind CSS** — Responsive, utility-first styling for a clean, modern, accessible UI.
+- **React Router DOM** — Seamless client-side routing for a true Single Page Application (SPA) experience.
+- **Axios** — Configured interceptors for secure HTTP requests and centralized error handling.
 
 ### ⚙️ Backend & API Engineering
-*   **Node.js & Express.js:** Highly scalable, asynchronous backend API handling all business logic.
-*   **MongoDB Atlas & Mongoose:** Fully managed NoSQL database using rigid Mongoose schemas for data integrity and complex aggregations.
-*   **RESTful Architecture:** Clean, stateless API endpoints organized by resources (`/api/admin`, `/api/user`, `/api/doctor`).
-*   **Express Rate Limiter:** Advanced DDoS protection. Explicitly configured to limit IPs to 100 requests per 15 minutes, preventing brute-force login attempts.
+- **Node.js & Express.js** — Scalable, asynchronous backend handling all business logic.
+- **MongoDB Atlas & Mongoose** — Fully managed NoSQL database with rigid schemas for data integrity and complex aggregations.
+- **RESTful Architecture** — Clean, stateless endpoints organized by resource (`/api/admin`, `/api/user`, `/api/doctor`).
+- **Express Rate Limiter** — DDoS protection, limiting IPs to 100 requests per 15 minutes to prevent brute-force attacks.
 
 ### 🔐 Authentication, Security & Payments
-*   **Google OAuth 2.0:** Deep integration with `@react-oauth/google` allowing users to bypass traditional signups and log in instantly via Google.
-*   **JSON Web Tokens (JWT):** Secure, stateless authentication mechanism. Tokens are securely generated and verified across all restricted endpoints.
-*   **Bcrypt.js:** Advanced cryptographic hashing of all user and admin passwords before database insertion.
-*   **RazorPay Gateway:** Production-ready payment gateway integration for secure, real-time appointment booking and transaction tracking.
+- **Google OAuth 2.0** — Integrated via `@react-oauth/google` for instant, passwordless login.
+- **JSON Web Tokens (JWT)** — Secure, stateless authentication across all protected endpoints.
+- **Bcrypt.js** — Cryptographic hashing of all user and admin passwords before storage.
+- **RazorPay Gateway** — Production-ready payment integration for real-time appointment booking.
 
-### ☁️ DevOps, Cloud & Infrastructure (The Crown Jewel)
-*   **Microservices Architecture:** Frontend, Admin, and Backend are 100% decoupled. If the Admin portal crashes, the Patient portal remains fully operational.
-*   **Docker & Docker Compose:** Every service is containerized. `docker-compose.yml` orchestrates the entire cluster locally with a single command.
-*   **Multi-Stage Docker Builds:** Optimized Dockerfiles that compile React code in Stage 1, then discard all heavy `node_modules` in Stage 2.
-*   **Alpine Linux Compression:** Utilized `node:20-alpine` and `nginx:alpine` to shrink Docker images by **~75-80%** (from >1GB down to ~150MB), massively reducing AWS storage costs and deployment times.
-*   **NGINX Reverse Proxy:** High-performance web server acting as a static file server and router for the compiled React applications.
-*   **AWS Elastic Container Registry (ECR):** Secure, private AWS vault where our compiled Docker images are tagged and stored.
-*   **AWS Elastic Container Service (ECS):** The brain of the operation. Orchestrates our containers, ensuring they are always running.
-*   **AWS EC2 Launch Type:** Hosted on a custom EC2 instance to maximize free-tier usage while maintaining full control over the host machine.
-*   **Zero-Downtime Rolling Updates:** Configured ECS Deployments with a `0% Minimum Healthy Percent` to allow graceful container replacement without exceeding EC2 memory limits.
-*   **Continuous Integration (CI):** Implemented **Vitest** for automated unit testing, forming the foundational layer of a robust CI/CD pipeline.
-*   **Cloudinary Integration:** External cloud media management for uploading, optimizing, and serving therapist and user profile pictures instantly.
-*   **Dynamic DNS (DuckDNS):** Mapped the raw AWS IPv4 address to a clean, professional domain name (`safespace-health.duckdns.org`) to satisfy strict Google OAuth domain origin policies.
+### ☁️ DevOps, Cloud & Infrastructure — *The Crown Jewel*
+- **Microservices Architecture** — Frontend, Admin, and Backend are 100% decoupled; if the Admin portal fails, the Patient portal stays fully operational.
+- **Docker & Docker Compose** — Every service containerized; the entire cluster spins up locally with one command.
+- **Multi-Stage Docker Builds** — Compiles React in Stage 1, discards heavy `node_modules` in Stage 2.
+- **Alpine Linux Compression** — `node:20-alpine` & `nginx:alpine` shrink images by **~75–80%** (1GB+ → ~150MB), cutting AWS storage costs and deployment time.
+- **NGINX Reverse Proxy** — High-performance static file serving and routing for compiled React apps.
+- **AWS ECR** — Secure, private registry for versioned Docker images.
+- **AWS ECS** — Orchestrates containers, ensuring continuous uptime.
+- **AWS EC2 (Free Tier)** — Custom instance maximizing free-tier usage with full host control.
+- **Zero-Downtime Rolling Updates** — ECS deployments configured with `0% Minimum Healthy Percent` for graceful replacement within EC2 memory limits.
+- **CI with Vitest** — Automated unit testing as the foundation of a robust CI/CD pipeline.
+- **Cloudinary** — Cloud media management for instant image upload, optimization, and delivery.
+- **Dynamic DNS (DuckDNS)** — Maps the AWS IP to a clean domain (`safespace-health.duckdns.org`), satisfying Google OAuth's strict domain policies.
 
----
+<br/>
 
-## 🏗️ System Architecture & Cloud Infrastructure Flow
+## 🏗️ System Architecture
 
-Below is the high-level architecture demonstrating how the decoupled Microservices communicate through the AWS Cloud environment, securely connecting the end-users to the database and third-party APIs.
+The diagram below shows how the decoupled microservices communicate across the AWS cloud environment, connecting end-users to the database and third-party APIs.
 
 ```mermaid
 graph TD
-    %% Define Styles
     classDef client fill:#4f46e5,stroke:#fff,stroke-width:2px,color:#fff
     classDef aws fill:#FF9900,stroke:#232F3E,stroke-width:2px,color:#232F3E
     classDef container fill:#2496ED,stroke:#fff,stroke-width:2px,color:#fff
     classDef db fill:#47A248,stroke:#fff,stroke-width:2px,color:#fff
     classDef external fill:#ea4335,stroke:#fff,stroke-width:2px,color:#fff
 
-    %% Clients / Entry Points
-    User(("👤 Patient / User\n(Browser)")):::client
-    Therapist(("🩺 Therapist / Doctor\n(Browser)")):::client
-    Admin(("👑 Admin\n(Browser)")):::client
+    User(("👤 Patient / User\nBrowser")):::client
+    Therapist(("🩺 Therapist / Doctor\nBrowser")):::client
+    Admin(("👑 Admin\nBrowser")):::client
 
-    %% DNS
-    DNS["🌐 DuckDNS\n(safespace-health.duckdns.org)"]:::aws
+    DNS["🌐 DuckDNS\nsafespace-health.duckdns.org"]:::aws
 
-    %% AWS Infrastructure
-    subgraph AWS_CLOUD ["☁️ Amazon Web Services (AWS)"]
-        subgraph EC2_INSTANCE ["💻 EC2 Instance (Free Tier)"]
-            subgraph ECS_CLUSTER ["🐳 ECS Cluster (Dockerized Microservices)"]
-                
-                %% Frontend Container
-                Frontend["📱 Frontend Service\n[Port: 5001]\nReact + NGINX"]:::container
-                
-                %% Admin Container
-                AdminPanel["🛡️ Admin Service\n[Port: 8080]\nReact + NGINX"]:::container
-                
-                %% Backend Container
-                Backend["⚙️ Backend API Service\n[Port: 5000]\nNode.js + Express"]:::container
-                
+    subgraph AWS_CLOUD ["☁️ Amazon Web Services"]
+        subgraph EC2_INSTANCE ["💻 EC2 Instance — Free Tier"]
+            subgraph ECS_CLUSTER ["🐳 ECS Cluster — Dockerized Microservices"]
+                Frontend["📱 Frontend Service\nPort 5001\nReact + NGINX"]:::container
+                AdminPanel["🛡️ Admin Service\nPort 8080\nReact + NGINX"]:::container
+                Backend["⚙️ Backend API Service\nPort 5000\nNode.js + Express"]:::container
             end
         end
     end
 
-    %% External Services
-    Mongo[("🍃 MongoDB Atlas\n(Database)")]:::db
-    GoogleAuth["🔐 Google OAuth 2.0\n(Authentication)"]:::external
-    RazorPay["💳 RazorPay API\n(Payments)"]:::external
-    Cloudinary["🖼️ Cloudinary\n(Image Storage)"]:::external
+    Mongo[("🍃 MongoDB Atlas\nDatabase")]:::db
+    GoogleAuth["🔐 Google OAuth 2.0\nAuthentication"]:::external
+    RazorPay["💳 RazorPay API\nPayments"]:::external
+    Cloudinary["🖼️ Cloudinary\nImage Storage"]:::external
 
-    %% Connections
-    User -->|"Visits"| DNS
-    Therapist -->|"Visits"| DNS
-    Admin -->|"Visits"| DNS
+    User -->|Visits| DNS
+    Therapist -->|Visits| DNS
+    Admin -->|Visits| DNS
 
-    DNS -->|"Routes HTTP"| Frontend
-    DNS -->|"Routes HTTP"| AdminPanel
+    DNS -->|Routes HTTP| Frontend
+    DNS -->|Routes HTTP| AdminPanel
 
-    Frontend -->|"API Requests"| Backend
-    AdminPanel -->|"API Requests"| Backend
-    
-    Backend <-->|"Reads/Writes"| Mongo
-    Backend <-->|"Verifies Auth"| GoogleAuth
-    Backend <-->|"Processes Txns"| RazorPay
-    Backend <-->|"Uploads Media"| Cloudinary
+    Frontend -->|API Requests| Backend
+    AdminPanel -->|API Requests| Backend
+
+    Backend <-->|Reads/Writes| Mongo
+    Backend <-->|Verifies Auth| GoogleAuth
+    Backend <-->|Processes Txns| RazorPay
+    Backend <-->|Uploads Media| Cloudinary
 ```
 
+<br/>
 
----
+## 🚀 Local Development Setup
 
-## 🚀 Detailed Local Development Setup
+Two supported paths: **The Docker Way** (recommended, one command) or **The Manual Way** (run each service with native Node/React scripts).
 
-We offer two ways to run this project locally: **The Docker Way** (Recommended, 1 command) and **The Manual Way** (Running standard Node/React scripts). 
+### ✅ Prerequisites
+- [Git](https://git-scm.com/)
+- [Docker Desktop](https://www.docker.com/products/docker-desktop/) — for the Docker route
+- [Node.js v20+](https://nodejs.org/en) — for the manual route
 
-### Prerequisites
-- [Git](https://git-scm.com/) installed on your machine.
-- [Docker Desktop](https://www.docker.com/products/docker-desktop/) (If running via Docker).
-- [Node.js v20+](https://nodejs.org/en) (If running manually).
-
-### Step 1: Clone the Repository
+### 1️⃣ Clone the Repository
 ```bash
 git clone https://github.com/vivekanandpandey27/SafeSpace.git
 cd SafeSpace
 ```
 
-### Step 2: Configure Environment Variables (.env)
-You must create a `.env` file inside **each** of the three microservice folders (`backend`, `frontend`, `admin`). Here is exactly what goes in each file:
+### 2️⃣ Configure Environment Variables
 
-**📍 `backend/.env`**
+Create a `.env` file inside **each** of the three service folders (`backend`, `frontend`, `admin`):
+
+<details>
+<summary><strong>📍 backend/.env</strong></summary>
+
 ```env
 PORT=5000
 MONGODB_URI=mongodb+srv://<your_username>:<your_password>@cluster.mongodb.net/safespace
@@ -191,66 +193,101 @@ RAZORPAY_KEY_SECRET=your_razorpay_key_secret
 FRONTEND_URL=http://localhost:5173
 ADMIN_URL=http://localhost:5174
 ```
+</details>
 
-**📍 `frontend/.env`**
+<details>
+<summary><strong>📍 frontend/.env</strong></summary>
+
 ```env
 VITE_BACKEND_URL=http://localhost:5000
 VITE_RAZORPAY_KEY_ID=your_razorpay_key_id
 VITE_GOOGLE_CLIENT_ID=your_google_oauth_client_id.apps.googleusercontent.com
 ```
+</details>
 
-**📍 `admin/.env`**
+<details>
+<summary><strong>📍 admin/.env</strong></summary>
+
 ```env
 VITE_BACKEND_URL=http://localhost:5000
 VITE_CURRENCY=₹
 ```
+</details>
 
----
+### 3️⃣ Run the Application
 
-### Step 3: Run the Application (Choose Option A or B)
+#### 🐳 Option A — The Docker Way *(Recommended)*
+Replicates the production cloud environment locally.
 
-#### 🐳 Option A: The Docker Way (Recommended)
-This method perfectly replicates the production cloud environment locally.
-1. Ensure Docker Desktop is running.
-2. Open a terminal in the root `SafeSpace` folder.
-3. Run the following command:
 ```bash
 docker compose up --build
 ```
-*(Wait 2-3 minutes for Docker to download the Alpine Linux images, install all NPM packages inside the containers, and boot up the servers).*
+*(Takes 2–3 minutes to pull Alpine images, install dependencies, and boot all services.)*
 
-#### 💻 Option B: The Manual Way (Without Docker)
-If you prefer to run the raw code on your machine for rapid development:
-1. Open **three separate terminals**.
-2. **Terminal 1 (Backend):**
-   ```bash
-   cd backend
-   npm install
-   node Server.js
-   ```
-3. **Terminal 2 (Frontend):**
-   ```bash
-   cd frontend
-   npm install
-   npm run dev
-   ```
-4. **Terminal 3 (Admin):**
-   ```bash
-   cd admin
-   npm install
-   npm run dev
-   ```
+#### 💻 Option B — The Manual Way
+Open **three separate terminals**:
 
-### Step 4: Access the Platform
-Once the services are running, open your browser:
-- 📱 **Patient Portal:** [http://localhost:5173](http://localhost:5173)
-- 🛡️ **Admin Dashboard:** [http://localhost:5174](http://localhost:5174)
-- ⚙️ **Backend API:** [http://localhost:5000](http://localhost:5000)
+```bash
+# Terminal 1 — Backend
+cd backend
+npm install
+node Server.js
+```
+```bash
+# Terminal 2 — Frontend
+cd frontend
+npm install
+npm run dev
+```
+```bash
+# Terminal 3 — Admin
+cd admin
+npm install
+npm run dev
+```
 
----
+### 4️⃣ Access the Platform
 
-## 👨‍💻 Developer Notes & Conclusion
+| Portal | Local URL |
+|---|---|
+| 📱 Patient Portal | http://localhost:5173 |
+| 🛡️ Admin Dashboard | http://localhost:5174 |
+| ⚙️ Backend API | http://localhost:5000 |
 
-This project was built to bridge the gap between frontend web development and hardcore Cloud/DevOps engineering. By intentionally avoiding simple platforms like Vercel or Render, and instead choosing to manually containerize and orchestrate the application on raw AWS infrastructure, this project demonstrates a deep, fundamental understanding of how modern enterprise software is actually delivered to the world.
+<br/>
 
-*Designed, developed, and deployed with passion.* 💙
+## 📂 Project Structure
+
+```
+SafeSpace/
+├── backend/          # Node.js + Express REST API
+├── frontend/          # React + Vite patient portal
+├── admin/             # React + Vite admin dashboard
+├── docker-compose.yml # Local multi-service orchestration
+└── README.md
+```
+
+<br/>
+
+## 🧭 Roadmap
+
+- [ ] Real-time chat between patients and therapists
+- [ ] Video consultation support
+- [ ] Automated CI/CD pipeline (GitHub Actions → ECR → ECS)
+- [ ] Multi-region deployment for reduced latency
+
+<br/>
+
+## 👨‍💻 Developer Notes
+
+This project bridges the gap between frontend web development and hardcore Cloud/DevOps engineering. By intentionally avoiding simplified platforms like Vercel or Render — and instead manually containerizing and orchestrating the application on raw AWS infrastructure — SafeSpace demonstrates a deep, practical understanding of how modern enterprise software is actually built and delivered.
+
+<br/>
+
+<div align="center">
+
+**Designed, developed, and deployed with passion 💙**
+
+⭐ If you found this project interesting, consider giving it a star!
+
+</div>
