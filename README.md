@@ -1,4 +1,4 @@
-﻿<div align="center">
+<div align="center">
 
 <img src="https://img.shields.io/badge/Status-Live%20on%20AWS-%2300C851?style=for-the-badge" />
 <img src="https://img.shields.io/badge/Architecture-Microservices-blueviolet?style=for-the-badge" />
@@ -512,6 +512,9 @@ npm test
 
 ⭐ If you found this project useful or impressive, consider giving it a star!
 
-[![GitHub](https://img.shields.io/badge/GitHub-vivekanandpandey27-181717?style=for-the-badge&logo=github&logoColor=white)](https://github.com/vivekanandpandey27/SafeSpace)
+### 👥 Contributors
+
+[![Vivekanand Pandey](https://img.shields.io/badge/Vivekanand%20Pandey-vivekanandpandey27-181717?style=for-the-badge&logo=github&logoColor=white)](https://github.com/vivekanandpandey27)
+[![Samar Mishra](https://img.shields.io/badge/Samar%20Mishra-SamMish45-181717?style=for-the-badge&logo=github&logoColor=white)](https://github.com/SamMish45)
 
 </div>
