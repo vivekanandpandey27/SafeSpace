@@ -59,7 +59,7 @@ const Navbar = () => {
         {/* User Panel Button on Dashboards */}
         {isOnDashboard && (
           <button
-            onClick={() => window.open('http://localhost:5173/', '_blank')}
+            onClick={() => window.open('http://safespace-health.duckdns.org:5001', '_blank')}
             className='ml-1 text-xs px-3 py-1.5 rounded-full border border-indigo-200 text-indigo-600 hover:bg-indigo-50 transition-all duration-200 font-medium hidden sm:block'
           >
             🌐 User Panel
