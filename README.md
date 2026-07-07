@@ -95,28 +95,68 @@ Every piece of technology in this project was chosen to mirror real-world, senio
 
 ---
 
-## 🏗️ System Architecture
+## 🏗️ System Architecture & Cloud Infrastructure Flow
 
-```text
-                                    ┌──────────────────────┐
-                                    │    Google OAuth 2.0  │
-                                    └──────────┬───────────┘
-                                               │
-┌─────────────────────────┐           ┌────────▼──────────┐           ┌────────────────────────┐
-│  Patient Portal (React) │           │    AWS ECS / EC2  │           │ Admin Portal (React)   │
-│  [NGINX Container]      │◀─────────▶│    API Gateway &  │◀─────────▶│ [NGINX Container]      │
-│  Port: 5001             │   HTTP    │    Backend Node   │   HTTP    │ Port: 8080             │
-└─────────────────────────┘           │    [Container]    │           └────────────────────────┘
-                                      │    Port: 5000     │
-                                      └────────┬──────────┘
-                                               │
-                  ┌────────────────────────────┼────────────────────────────┐
-                  │                            │                            │
-        ┌─────────▼─────────┐        ┌─────────▼─────────┐        ┌─────────▼─────────┐
-        │   MongoDB Atlas   │        │     RazorPay      │        │    Cloudinary     │
-        │   (Database)      │        │ (Payment Gateway) │        │ (Media Storage)   │
-        └───────────────────┘        └───────────────────┘        └───────────────────┘
+Below is the high-level architecture demonstrating how the decoupled Microservices communicate through the AWS Cloud environment, securely connecting the end-users to the database and third-party APIs.
+
+```mermaid
+graph TD
+    %% Define Styles
+    classDef client fill:#4f46e5,stroke:#fff,stroke-width:2px,color:#fff
+    classDef aws fill:#FF9900,stroke:#232F3E,stroke-width:2px,color:#232F3E
+    classDef container fill:#2496ED,stroke:#fff,stroke-width:2px,color:#fff
+    classDef db fill:#47A248,stroke:#fff,stroke-width:2px,color:#fff
+    classDef external fill:#ea4335,stroke:#fff,stroke-width:2px,color:#fff
+
+    %% Clients / Entry Points
+    User(("👤 Patient / User\n(Browser)")):::client
+    Therapist(("🩺 Therapist / Doctor\n(Browser)")):::client
+    Admin(("👑 Admin\n(Browser)")):::client
+
+    %% DNS
+    DNS["🌐 DuckDNS\n(safespace-health.duckdns.org)"]:::aws
+
+    %% AWS Infrastructure
+    subgraph AWS_CLOUD ["☁️ Amazon Web Services (AWS)"]
+        subgraph EC2_INSTANCE ["💻 EC2 Instance (Free Tier)"]
+            subgraph ECS_CLUSTER ["🐳 ECS Cluster (Dockerized Microservices)"]
+                
+                %% Frontend Container
+                Frontend["📱 Frontend Service\n[Port: 5001]\nReact + NGINX"]:::container
+                
+                %% Admin Container
+                AdminPanel["🛡️ Admin Service\n[Port: 8080]\nReact + NGINX"]:::container
+                
+                %% Backend Container
+                Backend["⚙️ Backend API Service\n[Port: 5000]\nNode.js + Express"]:::container
+                
+            end
+        end
+    end
+
+    %% External Services
+    Mongo[("🍃 MongoDB Atlas\n(Database)")]:::db
+    GoogleAuth["🔐 Google OAuth 2.0\n(Authentication)"]:::external
+    RazorPay["💳 RazorPay API\n(Payments)"]:::external
+    Cloudinary["🖼️ Cloudinary\n(Image Storage)"]:::external
+
+    %% Connections
+    User -->|"Visits"| DNS
+    Therapist -->|"Visits"| DNS
+    Admin -->|"Visits"| DNS
+
+    DNS -->|"Routes HTTP"| Frontend
+    DNS -->|"Routes HTTP"| AdminPanel
+
+    Frontend -->|"API Requests"| Backend
+    AdminPanel -->|"API Requests"| Backend
+    
+    Backend <-->|"Reads/Writes"| Mongo
+    Backend <-->|"Verifies Auth"| GoogleAuth
+    Backend <-->|"Processes Txns"| RazorPay
+    Backend <-->|"Uploads Media"| Cloudinary
 ```
+
 
 ---
 
