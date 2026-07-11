@@ -3,7 +3,7 @@ import bcrypt from "bcrypt";
 import doctorModel from "../models/doctorModel.js";
 import appointmentModel from "../models/appointmentModel.js";
 
-// Doctor login
+// Doctor login all logic
 const loginDoctor = async (req, res) => {
   try {
     const { email, password } = req.body;
@@ -88,7 +88,7 @@ const doctorList = async (req, res) => {
 };
 
 // Toggle doctor's availability
-  const changeAvailability = async (req, res) => {
+const changeAvailability = async (req, res) => {
   try {
     const { docId } = req.body;
 
