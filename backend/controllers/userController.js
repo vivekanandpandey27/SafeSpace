@@ -267,16 +267,32 @@ const paymentRazorpay = async (req, res) => {
 // API to verify payment of razorpay
 const verifyRazorpay = async (req, res) => {
     try {
-        const { razorpay_order_id } = req.body
+        const { razorpay_order_id, razorpay_payment_id, razorpay_signature } = req.body
+
+        // Step 1: Verify the signature first
+        const body = razorpay_order_id + "|" + razorpay_payment_id
+
+        const expectedSignature = crypto
+            .createHmac('sha256', process.env.RAZORPAY_KEY_SECRET)
+            .update(body)
+            .digest('hex')
+
+        const isSignatureValid = expectedSignature === razorpay_signature
+
+        if (!isSignatureValid) {
+            return res.json({ success: false, message: 'Payment verification failed: Invalid signature' })
+        }
+
+        // Step 2: Only fetch order from Razorpay if signature is valid
         const orderInfo = await razorpayInstance.orders.fetch(razorpay_order_id)
 
         if (orderInfo.status === 'paid') {
             await appointmentModel.findByIdAndUpdate(orderInfo.receipt, { payment: true })
             res.json({ success: true, message: "Payment Successful" })
-        }
-        else {
+        } else {
             res.json({ success: false, message: 'Payment Failed' })
         }
+
     } catch (error) {
         console.log(error)
         res.json({ success: false, message: error.message })
