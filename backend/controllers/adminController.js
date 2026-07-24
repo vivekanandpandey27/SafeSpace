@@ -9,22 +9,24 @@ import userModel from "../models/userModel.js"
 // API for admin login
 const loginAdmin = async (req, res) => {
     try {
-
-        const { email, password } = req.body
+        const { email, password } = req.body;
 
         if (email === process.env.ADMIN_EMAIL && password === process.env.ADMIN_PASSWORD) {
-            const token = jwt.sign(email + password, process.env.JWT_SECRET)
-            res.json({ success: true, token })
+            // Fixed admin login issue: Pass an object with a role instead of the raw password also added expiration
+            const token = jwt.sign(
+                { role: 'admin', email: email },
+                process.env.JWT_SECRET,
+                { expiresIn: '1d' }
+            );
+            res.json({ success: true, token });
         } else {
-            res.json({ success: false, message: "Invalid credentials" })
+            res.json({ success: false, message: "Invalid credentials" });
         }
-
     } catch (error) {
-        console.log(error)
-        res.json({ success: false, message: error.message })
+        console.log(error);
+        res.json({ success: false, message: error.message });
     }
-
-}
+};
 
 // API for adding Doctor
 const addDoctor = async (req, res) => {
@@ -172,4 +174,4 @@ const deleteDoctor = async (req, res) => {
 }
 
 
-export { loginAdmin, addDoctor, allDoctors, appointmentsAdmin, appointmentCancel, adminDashboard, deleteDoctor }
+export { loginAdmin, addDoctor, allDoctors, appointmentsAdmin, appointmentCancel, adminDashboard, deleteDoctor }
