@@ -17,7 +17,7 @@ const AdminContextProvider = (props) => {
 
     const getAllDoctors = async () => {
         try {
-            const { data } = await axios.get(backendUrl + '/api/admin/all-doctors', { headers: { aToken } })
+            const { data } = await axios.get(backendUrl + '/api/admin/all-doctors', { headers: { token: aToken } })
             if (data.success) {
                 setDoctors(data.doctors)
             } else {
@@ -30,7 +30,7 @@ const AdminContextProvider = (props) => {
 
     const changeAvailability = async (docId) => {
         try {
-            const { data } = await axios.post(backendUrl + '/api/admin/change-availability', { docId }, { headers: { aToken } })
+            const { data } = await axios.post(backendUrl + '/api/admin/change-availability', { docId }, { headers: { token: aToken } })
             if (data.success) {
                 toast.success(data.message)
                 getAllDoctors()
@@ -46,7 +46,7 @@ const AdminContextProvider = (props) => {
     // Delete a doctor
     const deleteDoctor = async (docId) => {
         try {
-            const { data } = await axios.post(backendUrl + '/api/admin/delete-doctor', { docId }, { headers: { aToken } })
+            const { data } = await axios.post(backendUrl + '/api/admin/delete-doctor', { docId }, { headers: { token: aToken } })
             if (data.success) {
                 toast.success(data.message)
                 getAllDoctors()
@@ -62,7 +62,7 @@ const AdminContextProvider = (props) => {
     // Getting all appointment data from Database using API
     const getAllAppointments = async () => {
         try {
-            const { data } = await axios.get(backendUrl + '/api/admin/appointments', { headers: { aToken } })
+            const { data } = await axios.get(backendUrl + '/api/admin/appointments', { headers: { token: aToken } })
             if (data.success) {
                 setAppointments(data.appointments.reverse())
             } else {
@@ -77,7 +77,7 @@ const AdminContextProvider = (props) => {
     // Function to cancel appointment using API
     const cancelAppointment = async (appointmentId) => {
         try {
-            const { data } = await axios.post(backendUrl + '/api/admin/cancel-appointment', { appointmentId }, { headers: { aToken } })
+            const { data } = await axios.post(backendUrl + '/api/admin/cancel-appointment', { appointmentId }, { headers: { token: aToken } })
             if (data.success) {
                 toast.success(data.message)
                 getAllAppointments()
@@ -93,7 +93,7 @@ const AdminContextProvider = (props) => {
     // Getting Admin Dashboard data from Database using API
     const getDashData = async () => {
         try {
-            const { data } = await axios.get(backendUrl + '/api/admin/dashboard', { headers: { aToken } })
+            const { data } = await axios.get(backendUrl + '/api/admin/dashboard', { headers: { token: aToken } })
             if (data.success) {
                 setDashData(data.dashData)
             } else {
