@@ -43,7 +43,7 @@ const registerUser = async (req, res) => {
 
         const newUser = new userModel(userData)
         const user = await newUser.save()
-        const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET)
+        const token = jwt.sign({ id: user._id, role: 'user' }, process.env.JWT_SECRET, { expiresIn: '7d' })
 
         res.json({ success: true, token })
 
@@ -67,7 +67,7 @@ const loginUser = async (req, res) => {
         const isMatch = await bcrypt.compare(password, user.password)
 
         if (isMatch) {
-            const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET)
+            const token = jwt.sign({ id: user._id, role: 'user' }, process.env.JWT_SECRET, { expiresIn: '7d' })
             res.json({ success: true, token })
         }
         else {
@@ -269,7 +269,7 @@ const verifyRazorpay = async (req, res) => {
     try {
         const { razorpay_order_id, razorpay_payment_id, razorpay_signature } = req.body
 
-        // Step 1: Verify the signature first
+        // Step 1: Verifying  the signature first
         const body = razorpay_order_id + "|" + razorpay_payment_id
 
         const expectedSignature = crypto
@@ -283,7 +283,7 @@ const verifyRazorpay = async (req, res) => {
             return res.json({ success: false, message: 'Payment verification failed: Invalid signature' })
         }
 
-        // Step 2: Only fetch order from Razorpay if signature is valid
+        // Step 2: Only fetching order from Razorpay if signature is valid
         const orderInfo = await razorpayInstance.orders.fetch(razorpay_order_id)
 
         if (orderInfo.status === 'paid') {
@@ -332,7 +332,7 @@ const googleAuth = async (req, res) => {
         }
 
         // Issue your own JWT (same as normal login flow)
-        const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET);
+        const token = jwt.sign({ id: user._id, role: 'user' }, process.env.JWT_SECRET, { expiresIn: '7d' });
         res.json({ success: true, token });
 
     } catch (error) {
@@ -343,4 +343,4 @@ const googleAuth = async (req, res) => {
 
 
 export {registerUser, loginUser, getProfile, updateProfile, bookAppointment, listAppointment, cancelAppointment, paymentRazorpay, verifyRazorpay, googleAuth}
-
+

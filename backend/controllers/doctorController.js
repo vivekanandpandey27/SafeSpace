@@ -18,7 +18,7 @@ const loginDoctor = async (req, res) => {
       return res.status(401).json({ success: false, message: "Invalid credentials" });
     }
 
-    const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET);
+    const token = jwt.sign({ id: user._id, role: 'doctor' }, process.env.JWT_SECRET, { expiresIn: '7d' });
     res.json({ success: true, token });
   } catch (error) {
     console.error(error);
@@ -129,13 +129,13 @@ const doctorProfile = async (req, res) => {
 const updateDoctorProfile = async (req, res) => {
   try {
     const docId = req.user.id;
-    const { fees, address, available, about } = req.body; // ✅ include `about`
+    const { fees, address, available, about } = req.body; 
 
     await doctorModel.findByIdAndUpdate(docId, {
       fees,
       address,
       available,
-      about, // ✅ update `about`
+      about, 
     });
 
     res.json({ success: true, message: "Profile Updated" });
