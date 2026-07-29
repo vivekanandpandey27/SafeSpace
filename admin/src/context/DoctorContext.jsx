@@ -14,11 +14,8 @@ const DoctorContextProvider = (props) => {
   const [dashData, setDashData] = useState(false);
   const [profileData, setProfileData] = useState(false);
 
-  const authHeader = {
-    headers: {
-      Authorization: `Bearer ${dToken}`,
-    },
-  };
+  // Unified token header — same 'token' key used by all three portals
+  const authHeader = { headers: { token: dToken } };
 
   const getAppointments = async () => {
     try {
