@@ -1,0 +1,554 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>SafeSpace — Backend API Flow</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #0b0f1a;
+      --surface: #111827;
+      --surface2: #1a2236;
+      --border: rgba(255,255,255,0.07);
+      --text: #e2e8f0;
+      --muted: #64748b;
+      --admin: #f59e0b;
+      --admin-dim: rgba(245,158,11,0.12);
+      --admin-glow: rgba(245,158,11,0.3);
+      --doctor: #10b981;
+      --doctor-dim: rgba(16,185,129,0.12);
+      --doctor-glow: rgba(16,185,129,0.3);
+      --user: #6366f1;
+      --user-dim: rgba(99,102,241,0.12);
+      --user-glow: rgba(99,102,241,0.3);
+      --global: #0ea5e9;
+      --global-dim: rgba(14,165,233,0.12);
+      --method-get: #10b981;
+      --method-post: #6366f1;
+      --auth: #f43f5e;
+      --auth-dim: rgba(244,63,94,0.15);
+      --multer: #a855f7;
+      --multer-dim: rgba(168,85,247,0.15);
+      --none: #475569;
+      --none-dim: rgba(71,85,105,0.15);
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+    }
+
+    header {
+      background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 100%);
+      border-bottom: 1px solid var(--border);
+      padding: 2rem 3rem;
+      position: relative;
+      overflow: hidden;
+    }
+    header::before {
+      content: '';
+      position: absolute;
+      top: -60px; right: -60px;
+      width: 280px; height: 280px;
+      background: radial-gradient(circle, rgba(99,102,241,0.15) 0%, transparent 70%);
+      pointer-events: none;
+    }
+    header::after {
+      content: '';
+      position: absolute;
+      bottom: -80px; left: 200px;
+      width: 300px; height: 300px;
+      background: radial-gradient(circle, rgba(14,165,233,0.1) 0%, transparent 70%);
+      pointer-events: none;
+    }
+    .header-badge {
+      display: inline-flex; align-items: center; gap: .4rem;
+      background: var(--user-dim); border: 1px solid rgba(99,102,241,0.3);
+      border-radius: 999px; padding: .25rem .8rem;
+      font-size: .72rem; font-weight: 600; color: #818cf8;
+      letter-spacing: .08em; text-transform: uppercase;
+      margin-bottom: .75rem;
+    }
+    .header-badge::before { content: ''; width: 6px; height: 6px; border-radius: 50%; background: #6366f1; animation: blink 2s infinite; display:inline-block; }
+    @keyframes blink { 0%,100%{opacity:1} 50%{opacity:.3} }
+    header h1 {
+      font-size: 2.2rem; font-weight: 800;
+      background: linear-gradient(135deg, #e2e8f0 0%, #94a3b8 100%);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+      background-clip: text;
+      line-height: 1.15; margin-bottom: .5rem;
+    }
+    header p { color: var(--muted); font-size: .95rem; font-weight: 400; }
+
+    .legend {
+      display: flex; flex-wrap: wrap; gap: .75rem;
+      padding: 1.25rem 3rem;
+      background: var(--surface);
+      border-bottom: 1px solid var(--border);
+    }
+    .legend-item {
+      display: flex; align-items: center; gap: .4rem;
+      font-size: .78rem; font-weight: 500; color: var(--muted);
+    }
+    .legend-dot { width: 10px; height: 10px; border-radius: 3px; display:inline-block; }
+
+    .global-section { padding: 2rem 3rem 1.5rem; }
+    .section-label {
+      font-size: .7rem; font-weight: 700; letter-spacing: .1em;
+      text-transform: uppercase; color: var(--muted);
+      margin-bottom: 1rem;
+    }
+    .pipeline {
+      display: flex; align-items: stretch; gap: 0;
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: 14px; overflow: hidden;
+    }
+    .pipeline-step {
+      flex: 1; padding: 1.1rem 1rem;
+      border-right: 1px solid var(--border);
+      position: relative;
+    }
+    .pipeline-step:last-child { border-right: none; }
+    .pipeline-step::after {
+      content: '→';
+      position: absolute; right: -10px; top: 50%;
+      transform: translateY(-50%);
+      color: var(--muted); font-size: .9rem; z-index: 2;
+      background: var(--surface); padding: 0 2px;
+    }
+    .pipeline-step:last-child::after { display: none; }
+    .step-tag { font-size: .65rem; font-weight: 700; text-transform: uppercase; letter-spacing: .08em; margin-bottom: .35rem; }
+    .step-name { font-family: 'JetBrains Mono', monospace; font-size: .82rem; font-weight: 600; color: var(--text); line-height: 1.4; }
+    .step-sub { font-size: .7rem; color: var(--muted); margin-top: .2rem; }
+    .step-global { background: linear-gradient(135deg, var(--global-dim), transparent); }
+
+    .forks { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; padding: .5rem 3rem 2rem; }
+    .fork-card { border-radius: 14px; border: 1px solid var(--border); background: var(--surface); overflow: hidden; }
+    .fork-header { padding: .75rem 1rem; display: flex; align-items: center; gap: .6rem; border-bottom: 1px solid var(--border); }
+    .fork-icon { width: 28px; height: 28px; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: .8rem; font-weight: 700; }
+    .fork-title { font-size: .8rem; font-weight: 700; }
+    .fork-base { font-family: 'JetBrains Mono', monospace; font-size: .7rem; color: var(--muted); margin-left: auto; }
+
+    .api-table { width: 100%; border-collapse: collapse; }
+    .api-table th { padding: .5rem .75rem; font-size: .65rem; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); text-align: left; border-bottom: 1px solid var(--border); background: rgba(255,255,255,0.02); }
+    .api-table td { padding: .55rem .75rem; font-size: .78rem; border-bottom: 1px solid rgba(255,255,255,0.04); vertical-align: middle; }
+    .api-table tr:last-child td { border-bottom: none; }
+    .api-table tr { transition: background .15s; }
+    .api-table tr:hover td { background: rgba(255,255,255,0.025); }
+
+    .method { display: inline-block; padding: .15rem .45rem; border-radius: 5px; font-family: 'JetBrains Mono', monospace; font-size: .65rem; font-weight: 700; }
+    .method-get { background: rgba(16,185,129,0.15); color: #10b981; }
+    .method-post { background: rgba(99,102,241,0.15); color: #818cf8; }
+
+    .endpoint { font-family: 'JetBrains Mono', monospace; font-size: .75rem; color: #cbd5e1; }
+
+    .mw-wrap { display: flex; flex-wrap: wrap; gap: .25rem; }
+    .mw { display: inline-block; padding: .12rem .4rem; border-radius: 4px; font-size: .65rem; font-weight: 600; font-family: 'JetBrains Mono', monospace; }
+    .mw-auth { background: var(--auth-dim); color: #fb7185; border: 1px solid rgba(244,63,94,0.2); }
+    .mw-multer { background: var(--multer-dim); color: #c084fc; border: 1px solid rgba(168,85,247,0.2); }
+    .mw-none { background: var(--none-dim); color: var(--muted); border: 1px solid rgba(71,85,105,0.2); }
+
+    .fn-name { font-family: 'JetBrains Mono', monospace; font-size: .72rem; font-weight: 600; color: #93c5fd; }
+    .fn-file { font-size: .65rem; color: var(--muted); display: block; margin-top: .1rem; }
+
+    .mw-ref-section { padding: 2rem 3rem; border-top: 1px solid var(--border); background: var(--surface); }
+    .mw-ref-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem; margin-top: 1rem; }
+    .mw-card { border-radius: 12px; padding: 1rem; border: 1px solid var(--border); background: var(--surface2); }
+    .mw-card-title { font-family: 'JetBrains Mono', monospace; font-size: .8rem; font-weight: 700; margin-bottom: .4rem; }
+    .mw-card-desc { font-size: .74rem; color: var(--muted); line-height: 1.55; }
+    .mw-card-tag { display: inline-block; margin-bottom: .55rem; padding: .1rem .4rem; border-radius: 4px; font-size: .62rem; font-weight: 700; text-transform: uppercase; }
+
+    .flow-section { padding: 2rem 3rem; border-top: 1px solid var(--border); }
+    .flow-diagram { background: var(--surface); border: 1px solid var(--border); border-radius: 14px; padding: 2rem; display: flex; align-items: center; justify-content: center; gap: 0; flex-wrap: wrap; row-gap: 1rem; }
+    .flow-node { display: flex; flex-direction: column; align-items: center; text-align: center; min-width: 120px; }
+    .flow-box { border-radius: 10px; padding: .65rem 1rem; font-size: .75rem; font-weight: 600; border: 1px solid transparent; width: 120px; }
+    .flow-arrow { font-size: 1.2rem; color: var(--muted); padding: 0 .5rem; align-self: center; }
+    .flow-sub { font-size: .62rem; color: var(--muted); margin-top: .3rem; max-width: 110px; }
+
+    .fn-client { background: var(--global-dim); border-color: rgba(14,165,233,0.3); color: #38bdf8; }
+    .fn-server { background: rgba(99,102,241,0.15); border-color: rgba(99,102,241,0.3); color: #818cf8; }
+    .fn-global-mw { background: rgba(14,165,233,0.1); border-color: rgba(14,165,233,0.25); color: #7dd3fc; }
+    .fn-router { background: rgba(245,158,11,0.12); border-color: rgba(245,158,11,0.3); color: #fbbf24; }
+    .fn-route-mw { background: var(--auth-dim); border-color: rgba(244,63,94,0.3); color: #fb7185; }
+    .fn-controller { background: var(--doctor-dim); border-color: rgba(16,185,129,0.3); color: #34d399; }
+    .fn-db { background: rgba(168,85,247,0.12); border-color: rgba(168,85,247,0.3); color: #c084fc; }
+    .fn-response { background: rgba(99,102,241,0.12); border-color: rgba(99,102,241,0.3); color: #818cf8; }
+
+    footer { text-align: center; padding: 1.5rem; border-top: 1px solid var(--border); font-size: .72rem; color: var(--muted); }
+
+    .admin .fork-header { background: var(--admin-dim); border-bottom-color: rgba(245,158,11,0.15); }
+    .admin .fork-icon { background: rgba(245,158,11,0.2); color: var(--admin); }
+    .admin .fork-title { color: var(--admin); }
+    .doctor .fork-header { background: var(--doctor-dim); border-bottom-color: rgba(16,185,129,0.15); }
+    .doctor .fork-icon { background: rgba(16,185,129,0.2); color: var(--doctor); }
+    .doctor .fork-title { color: var(--doctor); }
+    .user .fork-header { background: var(--user-dim); border-bottom-color: rgba(99,102,241,0.15); }
+    .user .fork-icon { background: rgba(99,102,241,0.2); color: var(--user); }
+    .user .fork-title { color: var(--user); }
+
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: var(--bg); }
+    ::-webkit-scrollbar-thumb { background: var(--surface2); border-radius: 3px; }
+
+    @media (max-width: 900px) {
+      .forks { grid-template-columns: 1fr; }
+      header, .legend, .global-section, .forks, .mw-ref-section, .flow-section { padding-left: 1.25rem; padding-right: 1.25rem; }
+      .mw-ref-grid { grid-template-columns: 1fr 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="header-badge">Node.js &middot; Express.js</div>
+  <h1>SafeSpace Backend &mdash; API Flow</h1>
+  <p>Complete request lifecycle &middot; Server.js &rarr; Router &rarr; Middleware &rarr; Controller &rarr; Function</p>
+</header>
+
+<div class="legend">
+  <div class="legend-item"><div class="legend-dot" style="background:var(--admin)"></div> Admin APIs</div>
+  <div class="legend-item"><div class="legend-dot" style="background:var(--doctor)"></div> Doctor APIs</div>
+  <div class="legend-item"><div class="legend-dot" style="background:var(--user)"></div> User APIs</div>
+  <div class="legend-item"><div class="legend-dot" style="background:#10b981"></div> GET</div>
+  <div class="legend-item"><div class="legend-dot" style="background:#818cf8"></div> POST</div>
+  <div class="legend-item"><div class="legend-dot" style="background:#fb7185"></div> Auth Middleware</div>
+  <div class="legend-item"><div class="legend-dot" style="background:#c084fc"></div> Multer (File Upload)</div>
+  <div class="legend-item"><div class="legend-dot" style="background:#475569"></div> No Middleware (Public)</div>
+</div>
+
+<!-- Flow Diagram -->
+<div class="flow-section">
+  <div class="section-label">&#128208; Request Lifecycle Overview</div>
+  <div class="flow-diagram">
+    <div class="flow-node">
+      <div class="flow-box fn-client">Client Request</div>
+      <div class="flow-sub">HTTP from Browser / App</div>
+    </div>
+    <div class="flow-arrow">&rarr;</div>
+    <div class="flow-node">
+      <div class="flow-box fn-server">Server.js</div>
+      <div class="flow-sub">Entry Point &middot; Port 4000</div>
+    </div>
+    <div class="flow-arrow">&rarr;</div>
+    <div class="flow-node">
+      <div class="flow-box fn-global-mw">Global MW</div>
+      <div class="flow-sub">cors() &middot; json() &middot; apiLimiter</div>
+    </div>
+    <div class="flow-arrow">&rarr;</div>
+    <div class="flow-node">
+      <div class="flow-box fn-router">Router</div>
+      <div class="flow-sub">/admin &middot; /doctor &middot; /user</div>
+    </div>
+    <div class="flow-arrow">&rarr;</div>
+    <div class="flow-node">
+      <div class="flow-box fn-route-mw">Route MW</div>
+      <div class="flow-sub">authAdmin / authDoctor / authUser &middot; multer</div>
+    </div>
+    <div class="flow-arrow">&rarr;</div>
+    <div class="flow-node">
+      <div class="flow-box fn-controller">Controller</div>
+      <div class="flow-sub">adminController &middot; doctorController &middot; userController</div>
+    </div>
+    <div class="flow-arrow">&rarr;</div>
+    <div class="flow-node">
+      <div class="flow-box fn-db">DB / Cloud</div>
+      <div class="flow-sub">MongoDB &middot; Cloudinary &middot; Razorpay</div>
+    </div>
+    <div class="flow-arrow">&rarr;</div>
+    <div class="flow-node">
+      <div class="flow-box fn-response">JSON Response</div>
+      <div class="flow-sub">{ success, data }</div>
+    </div>
+  </div>
+</div>
+
+<!-- Global Pipeline -->
+<div class="global-section">
+  <div class="section-label">&#127760; Server.js &mdash; Global Layer</div>
+  <div class="pipeline">
+    <div class="pipeline-step step-global">
+      <div class="step-tag" style="color:var(--global)">1 &middot; Middleware</div>
+      <div class="step-name">express.json()</div>
+      <div class="step-sub">Parse JSON body</div>
+    </div>
+    <div class="pipeline-step step-global">
+      <div class="step-tag" style="color:var(--global)">2 &middot; Middleware</div>
+      <div class="step-name">cors()</div>
+      <div class="step-sub">Cross-Origin headers</div>
+    </div>
+    <div class="pipeline-step step-global">
+      <div class="step-tag" style="color:#f59e0b">3 &middot; Rate Limiter</div>
+      <div class="step-name">apiLimiter</div>
+      <div class="step-sub">/api/* &middot; 100 req / 15 min</div>
+    </div>
+    <div class="pipeline-step" style="background:var(--admin-dim)">
+      <div class="step-tag" style="color:var(--admin)">4a &middot; Router</div>
+      <div class="step-name">/api/admin</div>
+      <div class="step-sub">&rarr; adminRouter</div>
+    </div>
+    <div class="pipeline-step" style="background:var(--doctor-dim)">
+      <div class="step-tag" style="color:var(--doctor)">4b &middot; Router</div>
+      <div class="step-name">/api/doctor</div>
+      <div class="step-sub">&rarr; doctorRouter</div>
+    </div>
+    <div class="pipeline-step" style="background:var(--user-dim)">
+      <div class="step-tag" style="color:var(--user)">4c &middot; Router</div>
+      <div class="step-name">/api/user</div>
+      <div class="step-sub">&rarr; userRouter</div>
+    </div>
+  </div>
+</div>
+
+<!-- API Tables -->
+<div class="forks">
+
+  <!-- ADMIN -->
+  <div class="fork-card admin">
+    <div class="fork-header">
+      <div class="fork-icon">&#128737;</div>
+      <span class="fork-title">Admin APIs</span>
+      <span class="fork-base">/api/admin</span>
+    </div>
+    <table class="api-table">
+      <thead>
+        <tr><th>Mthd</th><th>Endpoint</th><th>Middleware</th><th>Function</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><span class="method method-post">POST</span></td>
+          <td><span class="endpoint">/login</span></td>
+          <td><span class="mw mw-none">public</span></td>
+          <td><span class="fn-name">loginAdmin</span><span class="fn-file">adminController.js</span></td>
+        </tr>
+        <tr>
+          <td><span class="method method-post">POST</span></td>
+          <td><span class="endpoint">/add-doctor</span></td>
+          <td><div class="mw-wrap"><span class="mw mw-auth">authAdmin</span><span class="mw mw-multer">multer</span></div></td>
+          <td><span class="fn-name">addDoctor</span><span class="fn-file">adminController.js</span></td>
+        </tr>
+        <tr>
+          <td><span class="method method-get">GET</span></td>
+          <td><span class="endpoint">/all-doctors</span></td>
+          <td><span class="mw mw-auth">authAdmin</span></td>
+          <td><span class="fn-name">allDoctors</span><span class="fn-file">adminController.js</span></td>
+        </tr>
+        <tr>
+          <td><span class="method method-post">POST</span></td>
+          <td><span class="endpoint">/change-availability</span></td>
+          <td><span class="mw mw-auth">authAdmin</span></td>
+          <td><span class="fn-name">changeAvailability</span><span class="fn-file">doctorController.js</span></td>
+        </tr>
+        <tr>
+          <td><span class="method method-get">GET</span></td>
+          <td><span class="endpoint">/appointments</span></td>
+          <td><span class="mw mw-auth">authAdmin</span></td>
+          <td><span class="fn-name">appointmentsAdmin</span><span class="fn-file">adminController.js</span></td>
+        </tr>
+        <tr>
+          <td><span class="method method-post">POST</span></td>
+          <td><span class="endpoint">/cancel-appointment</span></td>
+          <td><span class="mw mw-auth">authAdmin</span></td>
+          <td><span class="fn-name">appointmentCancel</span><span class="fn-file">adminController.js</span></td>
+        </tr>
+        <tr>
+          <td><span class="method method-get">GET</span></td>
+          <td><span class="endpoint">/dashboard</span></td>
+          <td><span class="mw mw-auth">authAdmin</span></td>
+          <td><span class="fn-name">adminDashboard</span><span class="fn-file">adminController.js</span></td>
+        </tr>
+        <tr>
+          <td><span class="method method-post">POST</span></td>
+          <td><span class="endpoint">/delete-doctor</span></td>
+          <td><span class="mw mw-auth">authAdmin</span></td>
+          <td><span class="fn-name">deleteDoctor</span><span class="fn-file">adminController.js</span></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- DOCTOR -->
+  <div class="fork-card doctor">
+    <div class="fork-header">
+      <div class="fork-icon">&#129298;</div>
+      <span class="fork-title">Doctor APIs</span>
+      <span class="fork-base">/api/doctor</span>
+    </div>
+    <table class="api-table">
+      <thead>
+        <tr><th>Mthd</th><th>Endpoint</th><th>Middleware</th><th>Function</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><span class="method method-post">POST</span></td>
+          <td><span class="endpoint">/login</span></td>
+          <td><span class="mw mw-none">public</span></td>
+          <td><span class="fn-name">loginDoctor</span><span class="fn-file">doctorController.js</span></td>
+        </tr>
+        <tr>
+          <td><span class="method method-post">POST</span></td>
+          <td><span class="endpoint">/cancel-appointment</span></td>
+          <td><span class="mw mw-auth">authDoctor</span></td>
+          <td><span class="fn-name">appointmentCancel</span><span class="fn-file">doctorController.js</span></td>
+        </tr>
+        <tr>
+          <td><span class="method method-get">GET</span></td>
+          <td><span class="endpoint">/appointments</span></td>
+          <td><span class="mw mw-auth">authDoctor</span></td>
+          <td><span class="fn-name">appointmentsDoctor</span><span class="fn-file">doctorController.js</span></td>
+        </tr>
+        <tr>
+          <td><span class="method method-get">GET</span></td>
+          <td><span class="endpoint">/list</span></td>
+          <td><span class="mw mw-none">public</span></td>
+          <td><span class="fn-name">doctorList</span><span class="fn-file">doctorController.js</span></td>
+        </tr>
+        <tr>
+          <td><span class="method method-post">POST</span></td>
+          <td><span class="endpoint">/change-availability</span></td>
+          <td><span class="mw mw-auth">authDoctor</span></td>
+          <td><span class="fn-name">changeAvailability</span><span class="fn-file">doctorController.js</span></td>
+        </tr>
+        <tr>
+          <td><span class="method method-post">POST</span></td>
+          <td><span class="endpoint">/complete-appointment</span></td>
+          <td><span class="mw mw-auth">authDoctor</span></td>
+          <td><span class="fn-name">appointmentComplete</span><span class="fn-file">doctorController.js</span></td>
+        </tr>
+        <tr>
+          <td><span class="method method-get">GET</span></td>
+          <td><span class="endpoint">/dashboard</span></td>
+          <td><span class="mw mw-auth">authDoctor</span></td>
+          <td><span class="fn-name">doctorDashboard</span><span class="fn-file">doctorController.js</span></td>
+        </tr>
+        <tr>
+          <td><span class="method method-get">GET</span></td>
+          <td><span class="endpoint">/profile</span></td>
+          <td><span class="mw mw-auth">authDoctor</span></td>
+          <td><span class="fn-name">doctorProfile</span><span class="fn-file">doctorController.js</span></td>
+        </tr>
+        <tr>
+          <td><span class="method method-post">POST</span></td>
+          <td><span class="endpoint">/update-profile</span></td>
+          <td><span class="mw mw-auth">authDoctor</span></td>
+          <td><span class="fn-name">updateDoctorProfile</span><span class="fn-file">doctorController.js</span></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- USER -->
+  <div class="fork-card user">
+    <div class="fork-header">
+      <div class="fork-icon">&#128100;</div>
+      <span class="fork-title">User APIs</span>
+      <span class="fork-base">/api/user</span>
+    </div>
+    <table class="api-table">
+      <thead>
+        <tr><th>Mthd</th><th>Endpoint</th><th>Middleware</th><th>Function</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><span class="method method-post">POST</span></td>
+          <td><span class="endpoint">/register</span></td>
+          <td><span class="mw mw-none">public</span></td>
+          <td><span class="fn-name">registerUser</span><span class="fn-file">userController.js</span></td>
+        </tr>
+        <tr>
+          <td><span class="method method-post">POST</span></td>
+          <td><span class="endpoint">/login</span></td>
+          <td><span class="mw mw-none">public</span></td>
+          <td><span class="fn-name">loginUser</span><span class="fn-file">userController.js</span></td>
+        </tr>
+        <tr>
+          <td><span class="method method-post">POST</span></td>
+          <td><span class="endpoint">/google</span></td>
+          <td><span class="mw mw-none">public</span></td>
+          <td><span class="fn-name">googleAuth</span><span class="fn-file">userController.js</span></td>
+        </tr>
+        <tr>
+          <td><span class="method method-get">GET</span></td>
+          <td><span class="endpoint">/get-profile</span></td>
+          <td><span class="mw mw-auth">authUser</span></td>
+          <td><span class="fn-name">getProfile</span><span class="fn-file">userController.js</span></td>
+        </tr>
+        <tr>
+          <td><span class="method method-post">POST</span></td>
+          <td><span class="endpoint">/update-profile</span></td>
+          <td><div class="mw-wrap"><span class="mw mw-multer">multer</span><span class="mw mw-auth">authUser</span></div></td>
+          <td><span class="fn-name">updateProfile</span><span class="fn-file">userController.js</span></td>
+        </tr>
+        <tr>
+          <td><span class="method method-post">POST</span></td>
+          <td><span class="endpoint">/book-appointment</span></td>
+          <td><span class="mw mw-auth">authUser</span></td>
+          <td><span class="fn-name">bookAppointment</span><span class="fn-file">userController.js</span></td>
+        </tr>
+        <tr>
+          <td><span class="method method-get">GET</span></td>
+          <td><span class="endpoint">/appointments</span></td>
+          <td><span class="mw mw-auth">authUser</span></td>
+          <td><span class="fn-name">listAppointment</span><span class="fn-file">userController.js</span></td>
+        </tr>
+        <tr>
+          <td><span class="method method-post">POST</span></td>
+          <td><span class="endpoint">/cancel-appointment</span></td>
+          <td><span class="mw mw-auth">authUser</span></td>
+          <td><span class="fn-name">cancelAppointment</span><span class="fn-file">userController.js</span></td>
+        </tr>
+        <tr>
+          <td><span class="method method-post">POST</span></td>
+          <td><span class="endpoint">/payment-razorpay</span></td>
+          <td><span class="mw mw-auth">authUser</span></td>
+          <td><span class="fn-name">paymentRazorpay</span><span class="fn-file">userController.js</span></td>
+        </tr>
+        <tr>
+          <td><span class="method method-post">POST</span></td>
+          <td><span class="endpoint">/verifyRazorpay</span></td>
+          <td><span class="mw mw-auth">authUser</span></td>
+          <td><span class="fn-name">verifyRazorpay</span><span class="fn-file">userController.js</span></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- Middleware Reference -->
+<div class="mw-ref-section">
+  <div class="section-label">&#128274; Middleware Reference</div>
+  <div class="mw-ref-grid">
+    <div class="mw-card">
+      <div class="mw-card-tag" style="background:var(--auth-dim);color:#fb7185;">Auth</div>
+      <div class="mw-card-title" style="color:#fb7185;">authAdmin</div>
+      <div class="mw-card-desc">Reads <code>atoken</code> from request headers. Verifies JWT via <code>JWT_SECRET</code>. Checks decoded payload for <code>role === 'admin'</code> and matching email. Blocks with 401 if invalid.</div>
+    </div>
+    <div class="mw-card">
+      <div class="mw-card-tag" style="background:var(--auth-dim);color:#fb7185;">Auth</div>
+      <div class="mw-card-title" style="color:#fb7185;">authDoctor</div>
+      <div class="mw-card-desc">Reads <code>dtoken</code> from request headers. Verifies JWT and decodes <code>id</code>. Attaches doctor ID to <code>req.user</code> so downstream controller knows which doctor is acting.</div>
+    </div>
+    <div class="mw-card">
+      <div class="mw-card-tag" style="background:var(--auth-dim);color:#fb7185;">Auth</div>
+      <div class="mw-card-title" style="color:#fb7185;">authUser</div>
+      <div class="mw-card-desc">Reads <code>token</code> from request headers. Verifies JWT and decodes user <code>id</code>. Attaches to <code>req.body.userId</code> so controllers can identify the authenticated user.</div>
+    </div>
+    <div class="mw-card">
+      <div class="mw-card-tag" style="background:var(--multer-dim);color:#c084fc;">File Upload</div>
+      <div class="mw-card-title" style="color:#c084fc;">multer (upload)</div>
+      <div class="mw-card-desc">Configured for <code>diskStorage</code>. Used as <code>upload.single('image')</code> to parse a single image file from <code>multipart/form-data</code>. Exposes the file on <code>req.file</code>.</div>
+    </div>
+  </div>
+</div>
+
+<footer>
+  SafeSpace Backend &middot; Node.js &middot; Express.js &middot; MongoDB &middot; Cloudinary &middot; Razorpay &middot; JWT Auth
+</footer>
+
+</body>
+</html>

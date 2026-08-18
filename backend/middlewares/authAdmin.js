@@ -3,7 +3,6 @@ import jwt from "jsonwebtoken";
 // admin authentication middleware
 const authAdmin = async (req, res, next) => {
     try {
-        // Unified header: same 'token' key as user and doctor
         const { token } = req.headers;
 
         if (!token) {
@@ -12,7 +11,7 @@ const authAdmin = async (req, res, next) => {
 
         const token_decode = jwt.verify(token, process.env.JWT_SECRET);
 
-        // Role guard: must be 'admin' role AND matching admin email
+        // role must be admin otherwise we won't allow
         if (token_decode.role !== 'admin' || token_decode.email !== process.env.ADMIN_EMAIL) {
             return res.status(403).json({ success: false, message: 'Access denied. Invalid role.' });
         }
@@ -24,4 +23,4 @@ const authAdmin = async (req, res, next) => {
     }
 };
 
-export default authAdmin;
+export default authAdmin;

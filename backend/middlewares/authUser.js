@@ -11,7 +11,7 @@ const authUser = async (req, res, next) => {
     try {
         const token_decode = jwt.verify(token, process.env.JWT_SECRET)
 
-        // Role guard: reject tokens not issued for 'user' (e.g. a doctor token on a user route)
+        // rejecting request if the incoming request is not from user
         if (token_decode.role !== 'user') {
             return res.status(403).json({ success: false, message: 'Access denied. Invalid role.' })
         }
