@@ -42,6 +42,7 @@ const Navbar = () => {
         {[
           { to: '/', label: 'HOME' },
           { to: '/doctors', label: 'OUR THERAPISTS' },
+          { to: '/symptom-check', label: '🧠 SYMPTOM CHECK' },
           { to: '/about', label: 'ABOUT' },
           { to: '/contact', label: 'CONTACT' },
         ].map(({ to, label }) => (
@@ -145,6 +146,7 @@ const Navbar = () => {
               {[
                 { to: '/', label: '🏠 Home' },
                 { to: '/doctors', label: '💼 Our Therapists' },
+                { to: '/symptom-check', label: '🧠 Symptom Check' },
                 { to: '/about', label: 'ℹ️ About' },
                 { to: '/contact', label: '📞 Contact' },
               ].map(({ to, label }) => (

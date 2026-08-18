@@ -448,3 +448,99 @@ body {
 .choose-card:hover b {
   color: white;
 }
+
+/* ─── Symptom Checker / Quiz ────────────────────────────────── */
+.quiz-page-bg {
+  background: linear-gradient(160deg, #EEF2FF 0%, #F5F3FF 50%, #EDE9FE 100%);
+}
+
+.quiz-card {
+  background: #ffffff;
+  border-radius: 1.5rem;
+  box-shadow: 0 8px 48px rgba(79, 70, 229, 0.14);
+  border: 1.5px solid rgba(79, 70, 229, 0.10);
+  padding: 2.25rem 2rem;
+}
+
+@media (max-width: 640px) {
+  .quiz-card { padding: 1.5rem 1.25rem; }
+}
+
+/* Progress bar fill */
+.quiz-progress-bar {
+  background: linear-gradient(90deg, #4F46E5, #8B5CF6);
+}
+
+/* Option buttons */
+.quiz-option {
+  display: flex;
+  align-items: center;
+  gap: 0.875rem;
+  padding: 0.875rem 1.125rem;
+  border-radius: 1rem;
+  border: 2px solid #E0E7FF;
+  background: #F8F7FF;
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  text-align: left;
+  width: 100%;
+}
+
+.quiz-option:hover {
+  border-color: #4F46E5;
+  background: #EEF2FF;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 16px rgba(79, 70, 229, 0.12);
+}
+
+.quiz-option-selected {
+  border-color: #4F46E5 !important;
+  background: linear-gradient(135deg, #EEF2FF, #EDE9FE) !important;
+  box-shadow: 0 4px 16px rgba(79, 70, 229, 0.18);
+}
+
+.quiz-option-selected span:last-child {
+  color: #4F46E5;
+}
+
+/* Result banner gradient */
+.result-banner {
+  background: linear-gradient(135deg, #3730A3 0%, #4F46E5 50%, #7C3AED 100%);
+}
+
+/* Result doctor card */
+.result-doctor-card {
+  background: #F8F7FF;
+  border: 1.5px solid #E0E7FF;
+}
+
+.result-doctor-card:hover {
+  background: #EEF2FF;
+  border-color: #4F46E5;
+  transform: translateX(4px);
+  box-shadow: 0 4px 20px rgba(79, 70, 229, 0.12);
+}
+
+/* ─── Quiz Slide Animations ─────────────────────────────────── */
+@keyframes slideInRight {
+  from { opacity: 0; transform: translateX(40px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+@keyframes slideInLeft {
+  from { opacity: 0; transform: translateX(-40px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+@keyframes slideOutLeft {
+  from { opacity: 1; transform: translateX(0); }
+  to   { opacity: 0; transform: translateX(-40px); }
+}
+@keyframes slideOutRight {
+  from { opacity: 1; transform: translateX(0); }
+  to   { opacity: 0; transform: translateX(40px); }
+}
+
+.quiz-slide-in-right  { animation: slideInRight  0.28s cubic-bezier(0.4, 0, 0.2, 1) forwards; }
+.quiz-slide-in-left   { animation: slideInLeft   0.28s cubic-bezier(0.4, 0, 0.2, 1) forwards; }
+.quiz-slide-out-left  { animation: slideOutLeft  0.28s cubic-bezier(0.4, 0, 0.2, 1) forwards; }
+.quiz-slide-out-right { animation: slideOutRight 0.28s cubic-bezier(0.4, 0, 0.2, 1) forwards; }
+.quiz-visible         { opacity: 1; }
